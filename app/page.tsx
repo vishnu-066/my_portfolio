@@ -90,8 +90,8 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <FadeInSection>
-              <div className="flex flex-col items-center md:items-start">
-                <div className="mb-6 cosmic-profile">
+              <div className="flex flex-col items-center">
+                <div className="mb-6 cosmic-profile-centered">
                   <Image
                     src="/profile-pic.jpeg"
                     alt="Somula Vishnuvardhan Reddy"
@@ -100,13 +100,11 @@ export default function Home() {
                     className="rounded-full object-cover relative z-10"
                   />
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-2 text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-bold mb-2 text-center">
                   <span className="text-pink-500">Somula</span> Vishnuvardhan Reddy
                 </h1>
-                <p className="text-xl mb-6 text-gray-300 font-dancing-script text-center md:text-left">
-                  Emerging Data Scientist
-                </p>
-                <div className="flex space-x-4">
+                <p className="text-xl mb-6 text-gray-300 font-dancing-script text-center">Emerging Data Scientist</p>
+                <div className="flex space-x-4 justify-center">
                   <a
                     href="https://linkedin.com/in/vishnuvardhan06/"
                     target="_blank"

@@ -233,6 +233,43 @@ html {
   margin-right: -2rem;
 }
 
+.cosmic-profile-centered {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.cosmic-profile-centered::before {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--cosmic-purple));
+  z-index: 0;
+  animation: cosmic-pulse 8s infinite;
+}
+
+.cosmic-profile-centered::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 2px solid rgba(5, 217, 232, 0.5);
+  z-index: 0;
+  animation: cosmic-rotation 20s linear infinite;
+}
+
+.cosmic-profile-centered img {
+  position: relative;
+  z-index: 1;
+  border: 4px solid rgba(255, 42, 109, 0.8);
+  box-shadow: 0 0 20px rgba(255, 42, 109, 0.5);
+}
+
 .cosmic-profile::before {
   content: "";
   position: absolute;

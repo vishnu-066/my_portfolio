@@ -2,6 +2,7 @@ import "./globals.css"
 import { Inter, Dancing_Script } from "next/font/google"
 import type React from "react"
 import ParticleBackground from "./components/ParticleBackground"
+import { ThemeProvider } from "./context/ThemeContext"
 
 const inter = Inter({ subsets: ["latin"] })
 const dancingScript = Dancing_Script({
@@ -24,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} ${dancingScript.variable} animated-bg text-white min-h-screen`}>
-        <ParticleBackground />
-        {children}
+        <ThemeProvider>
+          <ParticleBackground />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

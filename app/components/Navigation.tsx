@@ -5,6 +5,7 @@ import Link from "next/link"
 import { FaDownload, FaBars, FaTimes } from "react-icons/fa"
 import Dropdown from "./Dropdown"
 import NeonButton from "./NeonButton"
+import ThemeToggle from "./ThemeToggle"
 
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState("home")
@@ -115,14 +116,17 @@ const Navigation = () => {
           <Dropdown title="More" items={dropdownItems} />
         </nav>
 
-        <NeonButton
-          href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:flex items-center"
-        >
-          <FaDownload className="mr-2" /> Resume
-        </NeonButton>
+        <div className="hidden md:flex items-center space-x-4">
+          <ThemeToggle />
+          <NeonButton
+            href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center"
+          >
+            <FaDownload className="mr-2" /> Resume
+          </NeonButton>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -193,14 +197,17 @@ const Navigation = () => {
             >
               Contact Us
             </button>
-            <NeonButton
-              href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full mt-4"
-            >
-              <FaDownload className="mr-2 inline" /> Resume
-            </NeonButton>
+            <div className="flex items-center justify-between mt-4 px-3">
+              <ThemeToggle />
+              <NeonButton
+                href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-auto"
+              >
+                <FaDownload className="mr-2 inline" /> Resume
+              </NeonButton>
+            </div>
           </div>
         </div>
       )}

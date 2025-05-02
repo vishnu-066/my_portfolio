@@ -4,10 +4,9 @@ import { useRef, useMemo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import { useWindowSize } from "../hooks/useWindowSize"
-import { useTheme } from "../context/ThemeContext"
 
 // Generate random points in 3D space
-function generatePoints(count: number, isDarkTheme: boolean) {
+function generatePoints(count: number) {
   const points = new Float32Array(count * 3)
   const colors = new Float32Array(count * 3)
   const scales = new Float32Array(count)
@@ -19,34 +18,18 @@ function generatePoints(count: number, isDarkTheme: boolean) {
     points[i3 + 1] = (Math.random() - 0.5) * 20 // y
     points[i3 + 2] = (Math.random() - 0.5) * 10 // z
 
-    if (isDarkTheme) {
-      // Dark theme colors: mix of blue and pink for futuristic feel
-      const colorChoice = Math.random()
-      if (colorChoice < 0.6) {
-        // Blue tones (60% of particles)
-        colors[i3] = 0.05 + Math.random() * 0.1 // R
-        colors[i3 + 1] = 0.5 + Math.random() * 0.3 // G
-        colors[i3 + 2] = 0.8 + Math.random() * 0.2 // B
-      } else {
-        // Pink tones (40% of particles)
-        colors[i3] = 0.8 + Math.random() * 0.2 // R
-        colors[i3 + 1] = 0.1 + Math.random() * 0.1 // G
-        colors[i3 + 2] = 0.5 + Math.random() * 0.3 // B
-      }
+    // Dark theme colors: mix of blue and pink for futuristic feel
+    const colorChoice = Math.random()
+    if (colorChoice < 0.6) {
+      // Blue tones (60% of particles)
+      colors[i3] = 0.05 + Math.random() * 0.1 // R
+      colors[i3 + 1] = 0.5 + Math.random() * 0.3 // G
+      colors[i3 + 2] = 0.8 + Math.random() * 0.2 // B
     } else {
-      // Light theme colors: softer blues and purples
-      const colorChoice = Math.random()
-      if (colorChoice < 0.6) {
-        // Soft blue tones (60% of particles)
-        colors[i3] = 0.2 + Math.random() * 0.2 // R
-        colors[i3 + 1] = 0.4 + Math.random() * 0.3 // G
-        colors[i3 + 2] = 0.7 + Math.random() * 0.3 // B
-      } else {
-        // Soft purple tones (40% of particles)
-        colors[i3] = 0.5 + Math.random() * 0.2 // R
-        colors[i3 + 1] = 0.3 + Math.random() * 0.2 // G
-        colors[i3 + 2] = 0.7 + Math.random() * 0.3 // B
-      }
+      // Pink tones (40% of particles)
+      colors[i3] = 0.8 + Math.random() * 0.2 // R
+      colors[i3 + 1] = 0.1 + Math.random() * 0.1 // G
+      colors[i3 + 2] = 0.5 + Math.random() * 0.3 // B
     }
 
     // Random sizes
@@ -60,11 +43,8 @@ function generatePoints(count: number, isDarkTheme: boolean) {
 }
 
 function Points() {
-  const { theme } = useTheme()
-  const isDarkTheme = theme === "dark"
-
   const pointsRef = useRef<THREE.Points>(null!)
-  const { positions, colors, scales, speeds } = useMemo(() => generatePoints(1500, isDarkTheme), [isDarkTheme])
+  const { positions, colors, scales, speeds } = useMemo(() => generatePoints(1500), [])
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime()
@@ -95,7 +75,7 @@ function Points() {
         size={0.1}
         vertexColors
         transparent
-        opacity={isDarkTheme ? 0.6 : 0.4}
+        opacity={0.6}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -106,7 +86,6 @@ function Points() {
 
 export default function ParticleBackground() {
   const { width, height } = useWindowSize()
-  const { theme } = useTheme()
 
   return (
     <div className="fixed top-0 left-0 w-full h-full z-[-1] pointer-events-none">

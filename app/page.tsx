@@ -1,10 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import Image from "next/image"
 import {
-  FaLinkedin,
-  FaGithub,
   FaPython,
   FaRProject,
   FaDatabase,
@@ -13,9 +10,15 @@ import {
   FaChartLine,
   FaBrain,
   FaChartArea,
+  FaTrophy,
+  FaMedal,
+  FaAward,
+  FaEnvelope,
+  FaGithub,
 } from "react-icons/fa"
 import { SiCplusplus, SiPandas, SiNumpy, SiMysql, SiTableau, SiR } from "react-icons/si"
 import Navigation from "./components/Navigation"
+import HeroSection from "./components/HeroSection"
 import FadeInSection from "./components/FadeInSection"
 import SkillCategory from "./components/SkillCategory"
 import ProjectCard from "./components/ProjectCard"
@@ -23,9 +26,8 @@ import CertificationCard from "./components/CertificationCard"
 import EducationCard from "./components/EducationCard"
 import AchievementCard from "./components/AchievementCard"
 import SocialWorkCard from "./components/SocialWorkCard"
-import LeetCodeIcon from "./components/LeetCodeIcon"
 import ContactUs from "./components/ContactUs"
-import { useTheme } from "./context/ThemeContext"
+import SectionHeading from "./components/SectionHeading"
 import dynamic from "next/dynamic"
 
 // Dynamically import the ParticleBackground to avoid SSR issues
@@ -34,8 +36,6 @@ const ParticleBackground = dynamic(() => import("./components/ParticleBackground
 })
 
 export default function Home() {
-  const { theme } = useTheme()
-
   const staggeredRefs = {
     certifications: useRef<HTMLDivElement>(null),
     education: useRef<HTMLDivElement>(null),
@@ -112,89 +112,13 @@ export default function Home() {
     <>
       <Navigation />
 
-      {/* Home Section */}
-      <section id="home" className="min-h-screen pt-20 pb-10 flex flex-col justify-center section-padding">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <FadeInSection>
-              <div className="flex flex-col items-center">
-                <div className="mb-6 cosmic-profile-centered">
-                  <Image
-                    src="/profile-pic.jpeg"
-                    alt="Somula Vishnuvardhan Reddy"
-                    width={200}
-                    height={200}
-                    className="rounded-full object-cover relative z-10"
-                  />
-                </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-2 text-center">
-                  <span className={theme === "dark" ? "text-pink-500" : "text-blue-600"}>Somula</span> Vishnuvardhan
-                  Reddy
-                </h1>
-                <p className="text-xl mb-6 text-gray-300 font-dancing-script text-center">Emerging Data Scientist</p>
-                <div className="flex space-x-4 justify-center">
-                  <a
-                    href="https://linkedin.com/in/vishnuvardhan06/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin size={30} />
-                  </a>
-                  <a
-                    href="https://github.com/vishnu-066?tab=repositories"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                    aria-label="GitHub"
-                  >
-                    <FaGithub size={30} />
-                  </a>
-                  <a
-                    href="https://leetcode.com/u/Vishnu_vardhan_2004/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                    aria-label="LeetCode"
-                  >
-                    <LeetCodeIcon />
-                  </a>
-                </div>
-              </div>
-            </FadeInSection>
-
-            <FadeInSection delay={200}>
-              <div className="bg-gray-800 bg-opacity-20 p-6 rounded-lg border border-gray-700 backdrop-blur-sm floating">
-                <h2 className={`text-2xl font-bold mb-4 ${theme === "dark" ? "text-pink-400" : "text-blue-500"}`}>
-                  About Me
-                </h2>
-                <p className="text-gray-300 leading-relaxed">
-                  I am a passionate and dedicated emerging Data Scientist with a strong foundation in programming,
-                  statistical analysis, and machine learning. My expertise includes Python, R, and C++ programming,
-                  along with frameworks like Pandas, NumPy, and visualization tools such as Tableau.
-                  <br />
-                  <br />I am constantly exploring new technologies and methodologies in the field of data science to
-                  solve complex problems and derive meaningful insights from data. My goal is to leverage data-driven
-                  approaches to make impactful contributions to the field and help organizations make informed
-                  decisions.
-                </p>
-              </div>
-            </FadeInSection>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section */}
+      <HeroSection />
 
       {/* Skills Section */}
       <section id="skills" className="section-padding">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-pink-500" : "text-blue-600"}>My</span> Skills
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Skills" icon={<FaChartLine className="text-[#0ef] text-4xl" />} />
 
           <SkillCategory title="Programming Languages" skills={programmingSkills} delay={100} />
           <SkillCategory title="Frameworks & Libraries" skills={frameworkSkills} delay={200} />
@@ -206,13 +130,7 @@ export default function Home() {
       {/* Projects Section */}
       <section id="projects" className="py-20 bg-gray-900 bg-opacity-30 section-padding">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-pink-500" : "text-blue-600"}>My</span> Projects
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Projects" icon={<FaDatabase className="text-[#0ef] text-4xl" />} />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FadeInSection delay={100}>
@@ -252,15 +170,9 @@ export default function Home() {
       </section>
 
       {/* Certifications Section */}
-      <section id="certifications" className="section-padding">
+      <section id="certifications" className="section-padding highlight-section">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-cosmic-teal" : "text-blue-500"}>My</span> Certifications
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Certifications" icon={<FaAward className="text-[#0ef] text-4xl" />} />
 
           <div
             ref={staggeredRefs.certifications}
@@ -282,20 +194,21 @@ export default function Home() {
               url="https://www.coursera.org/account/accomplishments/specialization/ZXE2NDFGR3C3"
               delay={500}
             />
+            <CertificationCard
+              title="Data Analysis with Tableau"
+              issuer="Coursera"
+              date="June 2024"
+              url="https://www.coursera.org/account/accomplishments/verify/3C0MCD1QOS8M"
+              delay={600}
+            />
           </div>
         </div>
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-20 bg-gray-900 bg-opacity-30 section-padding">
+      <section id="education" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-neon-blue" : "text-blue-600"}>My</span> Education
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Education" icon={<FaGithub className="text-[#0ef] text-4xl" />} />
 
           <div ref={staggeredRefs.education} className="grid grid-cols-1 gap-6 mb-12 staggered-animation">
             <EducationCard
@@ -321,13 +234,16 @@ export default function Home() {
       </section>
 
       {/* Achievements Section */}
-      <section id="achievements" className="section-padding">
+      <section id="achievements" className="section-padding highlight-section">
         <div className="container mx-auto px-4">
+          <SectionHeading title="Achievements" icon={<FaTrophy className="text-[#0ef] text-4xl" />} />
+
           <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-neon-pink" : "text-blue-600"}>My</span> Achievements
-              </h2>
+            <div className="mb-8 text-center">
+              <p className="text-lg text-gray-300 italic">
+                "Achieved excellence in tech and sports through national and interschool recognition, awards, and
+                innovation challenges."
+              </p>
             </div>
           </FadeInSection>
 
@@ -345,25 +261,32 @@ export default function Home() {
               url="https://www.cipherschools.com/certificate/preview?id=66a76d5ed15c5abc1ea65e2a"
               delay={200}
             />
+            <AchievementCard
+              title="Runner-up in Interschool Drone Competition – LPU"
+              date="March 2024"
+              description="Secured second place in the prestigious drone competition at Lovely Professional University, demonstrating exceptional skills in drone programming, navigation, and innovative problem-solving."
+              delay={300}
+            />
+            <AchievementCard
+              title="Winner in District Cricket Championship"
+              date="August 2023"
+              description="Led the team to victory in the district-level cricket championship, showcasing leadership, teamwork, and athletic excellence throughout the tournament."
+              delay={400}
+            />
           </div>
         </div>
       </section>
 
       {/* Social Work Section */}
-      <section id="social-work" className="py-20 bg-gray-900 bg-opacity-30 section-padding">
+      <section id="social-work" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-cosmic-purple" : "text-blue-600"}>My</span> Social Work
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Social Work" icon={<FaMedal className="text-[#0ef] text-4xl" />} />
 
           <div ref={staggeredRefs.socialWork} className="grid grid-cols-1 md:grid-cols-2 gap-6 staggered-animation">
             <SocialWorkCard
               title="Meenakshi Shiksha Samithi"
-              description="Meenakshi Shiksha Samithi is a non-profit organization dedicated to supporting education and environmental sustainability. I actively participated in their initiatives, planting 50+ trees to promote green spaces and environmental consciousness. This initiative helped increase local biodiversity and provided a natural, healthier environment for the community. Additionally, I collaborated in raising awareness about the importance of environmental sustainability within the local community, aiming to foster long-term positive change."
+              description="Meenakshi Shiksha Samithi is a non-profit organization dedicated to supporting education and environmental sustainability. I actively participated in their initiatives, planting 50+ trees to promote green spaces and environmental consciousness. This initiative helped increase local biodiversity and provided a natural, healthier environment for the community."
+              url="https://drive.google.com/file/d/1zxoljsB4s4LqKpBSOs2qk31s_i1hynZQ/view?usp=drive_link"
               delay={100}
             />
             <SocialWorkCard
@@ -378,13 +301,7 @@ export default function Home() {
       {/* Contact Us Section */}
       <section id="contact-us" className="section-padding">
         <div className="container mx-auto px-4">
-          <FadeInSection>
-            <div className="section-title-wrapper text-center">
-              <h2 className="text-3xl font-bold section-title">
-                <span className={theme === "dark" ? "text-pink-500" : "text-blue-600"}>Contact</span> Me
-              </h2>
-            </div>
-          </FadeInSection>
+          <SectionHeading title="Contact Me" icon={<FaEnvelope className="text-[#0ef] text-4xl" />} />
 
           <FadeInSection delay={100}>
             <ContactUs />

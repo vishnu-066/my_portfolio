@@ -1,0 +1,112 @@
+/* Hero section specific styles */
+.cosmic-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(10, 25, 47, 0.5);
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #05d9e8, #ff2a6d) 1;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+.cosmic-social-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(5, 217, 232, 0.2), rgba(255, 42, 109, 0.2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.cosmic-social-btn:hover {
+  transform: translateY(-5px);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
+}
+
+.cosmic-social-btn:hover::before {
+  opacity: 1;
+}
+
+.cosmic-resume-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 28px;
+  background: linear-gradient(45deg, rgba(5, 217, 232, 0.1), rgba(255, 42, 109, 0.1));
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #05d9e8, #ff2a6d) 1;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(5px);
+}
+
+.cosmic-resume-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(5, 217, 232, 0.2), rgba(255, 42, 109, 0.2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.cosmic-resume-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(5, 217, 232, 0.4), 0 5px 10px rgba(255, 42, 109, 0.3);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.cosmic-resume-btn:hover::before {
+  opacity: 1;
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.floating-animation {
+  animation: floatAnimation 6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(5, 217, 232, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(5, 217, 232, 0.8), 0 0 40px rgba(255, 42, 109, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(5, 217, 232, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 4s infinite;
+}

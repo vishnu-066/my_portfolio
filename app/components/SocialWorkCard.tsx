@@ -1,6 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import type React from "react"
+
+import { useState, useEffect, useRef } from "react"
 import { FaHandsHelping, FaExternalLinkAlt } from "react-icons/fa"
 
 interface SocialWorkCardProps {
@@ -11,38 +13,65 @@ interface SocialWorkCardProps {
 }
 
 const SocialWorkCard = ({ title, description, url, delay = 0 }: SocialWorkCardProps) => {
-  return (
-    <motion.div
-      className="cosmic-card p-6"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: delay / 1000 }}
-      viewport={{ once: true }}
-      whileHover={{
-        y: -10,
-        boxShadow: "0 0 20px rgba(5, 217, 232, 0.3)",
-        borderColor: "rgba(5, 217, 232, 0.5)",
-      }}
-    >
+  const [isVisible, setIsVisible] = useState(false)
+  const cardRef = useRef<HTMLDivElement | HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              setIsVisible(true)
+            }, delay)
+          }
+        })
+      },
+      { threshold: 0.1 },
+    )
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current)
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current)
+      }
+    }
+  }, [delay])
+
+  const content = (
+    <>
       <div className="flex items-center mb-4">
         <div className="social-work-icon mr-3">
-          <FaHandsHelping className="text-2xl text-[#05d9e8]" />
+          <FaHandsHelping className="text-2xl enhanced-icon" />
         </div>
-        <h3 className="text-xl font-bold text-[#05d9e8]">{title}</h3>
+        <h3 className="text-xl font-bold text-cosmic-purple">{title}</h3>
         {url && (
-          <motion.a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 text-[#05d9e8] hover:text-[#ff4ec8]"
-            whileHover={{ scale: 1.2 }}
-          >
+          <a href={url} target="_blank" rel="noopener noreferrer" className="ml-2 text-[#0ef] hover:text-pink-400">
             <FaExternalLinkAlt />
-          </motion.a>
+          </a>
         )}
       </div>
       <p className="text-gray-300">{description}</p>
-    </motion.div>
+    </>
+  )
+
+  const cardClasses = `enhanced-card rounded-lg p-6 ${isVisible ? "scale-in" : "opacity-0"}`
+
+  if (url) {
+    return (
+      <div ref={cardRef as React.RefObject<HTMLDivElement>} className={cardClasses}>
+        {content}
+      </div>
+    )
+  }
+
+  return (
+    <div ref={cardRef as React.RefObject<HTMLDivElement>} className={cardClasses}>
+      {content}
+    </div>
   )
 }
 

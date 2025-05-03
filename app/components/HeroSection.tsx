@@ -2,9 +2,10 @@
 
 import { useRef } from "react"
 import { motion } from "framer-motion"
-import { FaLinkedin, FaGithub, FaFileAlt } from "react-icons/fa"
+import { FaLinkedin, FaGithub, FaDownload } from "react-icons/fa"
 import LeetCodeIcon from "./LeetCodeIcon"
 import CosmicProfile from "./CosmicProfile"
+import NeonButton from "./NeonButton"
 
 const HeroSection = () => {
   // Refs for scroll animations
@@ -107,7 +108,7 @@ const HeroSection = () => {
       className="min-h-screen flex items-center relative overflow-hidden py-20 px-6 md:px-10 lg:px-[10%]"
     >
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#050816] via-[#0a192f] to-[#050816] z-[-2]"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a192f] via-[#162a4a] to-[#0a192f] z-[-2]"></div>
 
       {/* Animated background elements */}
       <div className="absolute inset-0 z-[-1]">
@@ -153,10 +154,10 @@ const HeroSection = () => {
               Aspiring Data Scientist
             </motion.h2>
 
-            <motion.div className="space-y-3 mt-4" variants={itemVariants} custom={4}>
-              <p className="handwriting-text">"Passionate about transforming data into meaningful insights."</p>
-              <p className="handwriting-text">"Creating impactful solutions through data science and analytics."</p>
-            </motion.div>
+            <motion.p className="text-base md:text-lg text-gray-300 max-w-xl" variants={itemVariants} custom={4}>
+              Passionate about transforming data into meaningful insights and creating impactful solutions through data
+              science and analytics.
+            </motion.p>
 
             {/* Social media links */}
             <motion.div className="flex space-x-5 pt-4" variants={containerVariants}>
@@ -209,23 +210,16 @@ const HeroSection = () => {
               </motion.a>
             </motion.div>
 
-            {/* Resume Button */}
-            <motion.div variants={itemVariants} custom={5} className="mt-6">
-              <motion.a
+            {/* Resume button */}
+            <motion.div variants={itemVariants} custom={6} className="pt-4">
+              <NeonButton
                 href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cosmic-resume-btn"
-                whileHover={{
-                  y: -5,
-                  boxShadow: "0 10px 25px -5px rgba(5, 217, 232, 0.6), 0 5px 10px rgba(255, 42, 109, 0.4)",
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.5 }}
               >
-                <FaFileAlt className="mr-2" /> Download Resume
-              </motion.a>
+                <FaDownload className="mr-2" /> Download Resume
+              </NeonButton>
             </motion.div>
           </motion.div>
         </div>

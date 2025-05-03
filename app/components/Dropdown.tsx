@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { FaChevronDown } from "react-icons/fa"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface DropdownProps {
   title: string
@@ -41,13 +41,11 @@ const Dropdown = ({ title, items }: DropdownProps) => {
     <div className="relative inline-block" ref={dropdownRef}>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`text-lg font-medium ml-8 transition-colors duration-300 flex items-center ${
-          isOpen ? "text-[#05d9e8] neon-text" : "text-white"
-        }`}
-        whileHover={{
-          color: "#05d9e8",
-          textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
-        }}
+        className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 flex items-center ${
+          isOpen ? "text-[#0ef]" : "text-white"
+        } hover:text-[#0ef]`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         {title}
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }} className="ml-1">
@@ -62,13 +60,13 @@ const Dropdown = ({ title, items }: DropdownProps) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute mt-2 w-48 rounded-md bg-[#050816] bg-opacity-90 py-1 shadow-lg ring-1 ring-[#05d9e8] ring-opacity-20 backdrop-blur-sm z-50"
+            className="absolute mt-2 w-48 rounded-md bg-gray-800 bg-opacity-90 py-1 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-sm z-50 dropdown-menu"
           >
             {items.map((item, index) => (
               <motion.button
                 key={item.name}
                 onClick={() => handleItemClick(item.href)}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:text-[#05d9e8]"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:text-[#0ef] dropdown-item"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}

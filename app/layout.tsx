@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} ${dancingScript.variable} cosmic-bg text-white min-h-screen`}>
+      <body className={`${inter.className} ${dancingScript.variable} animated-bg text-white min-h-screen dark`}>
         <ParticleBackground />
         {children}
       </body>

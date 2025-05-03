@@ -109,7 +109,7 @@ export default function Home() {
   ]
 
   return (
-    <>
+    <div className="cosmic-bg">
       <Navigation />
 
       {/* Hero Section */}
@@ -128,7 +128,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-gray-900 bg-opacity-30 section-padding">
+      <section id="projects" className="py-20 bg-[#050816] bg-opacity-70 section-padding">
         <div className="container mx-auto px-4">
           <SectionHeading title="Projects" icon={<FaDatabase className="text-[#0ef] text-4xl" />} />
 
@@ -178,15 +178,34 @@ export default function Home() {
             ref={staggeredRefs.certifications}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 staggered-animation"
           >
-            <CertificationCard title="Cloud Computing" issuer="NPTEL" date="Nov 2024" delay={100} />
+            <CertificationCard
+              title="Cloud Computing"
+              issuer="NPTEL"
+              date="Nov 2024"
+              url="https://drive.google.com/file/d/1tNhlVdOQ_YV93KCCFNYJFK8WarbMIALB/view?usp=drive_link"
+              delay={100}
+            />
             <CertificationCard
               title="Data Structures and Algorithms with C++"
               issuer="Cipher Schools"
               date="July 2024"
+              url="https://www.cipherschools.com/certificate/preview?id=66a8f3e260e87d863c8fd446"
               delay={200}
             />
-            <CertificationCard title="Become a Data Scientist" issuer="LinkedIn" date="Feb 2023" delay={300} />
-            <CertificationCard title="Programming in Python" issuer="HackerRank" date="Dec 2022" delay={400} />
+            <CertificationCard
+              title="Become a Data Scientist"
+              issuer="LinkedIn"
+              date="Feb 2023"
+              url="https://www.linkedin.com/learning/certificates/d08bbfa3c5f91e8628eb7996f81d81152572b830101e5cd91a0e203e3ab25398"
+              delay={300}
+            />
+            <CertificationCard
+              title="Programming in Python"
+              issuer="HackerRank"
+              date="Dec 2022"
+              url="https://www.hackerrank.com/certificates/141f2bbc4534"
+              delay={400}
+            />
             <CertificationCard
               title="Excel Skills for Business"
               issuer="Coursera"
@@ -206,28 +225,31 @@ export default function Home() {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
+      <section id="education" className="py-20 bg-[#050816] bg-opacity-70 section-padding highlight-section">
         <div className="container mx-auto px-4">
           <SectionHeading title="Education" icon={<FaGithub className="text-[#0ef] text-4xl" />} />
 
-          <div ref={staggeredRefs.education} className="grid grid-cols-1 gap-6 mb-12 staggered-animation">
+          <div className="timeline-container py-10">
             <EducationCard
               institution="Lovely Professional University, Punjab"
               degree="B.Tech Computer Science Engineering"
               score="CGPA 7.06"
+              isLeft={true}
               delay={100}
             />
             <EducationCard
               institution="Sri Chaitanya Junior College, Hyderabad"
               degree="Intermediate"
               score="98%"
-              delay={200}
+              isLeft={false}
+              delay={300}
             />
             <EducationCard
               institution="St. Antony's E.M. School, Kadapa"
               degree="Matriculation"
               score="92%"
-              delay={300}
+              isLeft={true}
+              delay={500}
             />
           </div>
         </div>
@@ -238,27 +260,26 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading title="Achievements" icon={<FaTrophy className="text-[#0ef] text-4xl" />} />
 
-          <FadeInSection>
-            <div className="mb-8 text-center">
-              <p className="text-lg text-gray-300 italic">
-                "Achieved excellence in tech and sports through national and interschool recognition, awards, and
-                innovation challenges."
-              </p>
-            </div>
-          </FadeInSection>
+          <div className="mb-8 text-center">
+            <p className="text-lg text-gray-300 italic handwriting-text">
+              "Achieved excellence in tech and sports through national and interschool recognition, awards, and
+              innovation challenges."
+            </p>
+          </div>
 
-          <div ref={staggeredRefs.achievements} className="grid grid-cols-1 gap-6 staggered-animation">
-            <AchievementCard
-              title="HackerRank Consistency Badge"
-              date="Dec 2024"
-              description="Awarded for daily problem-solving streak, demonstrating strong commitment, problem-solving skills, and consistency in learning algorithms and data structures."
-              delay={100}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <AchievementCard
               title="Certificate of Excellence – Trainee"
               date="June 2024"
               description="Awarded by Cipher Schools for outstanding performance during Data Structures and Algorithms (DSA) training, showcasing deep understanding, practical skills, and dedication throughout the program."
               url="https://www.cipherschools.com/certificate/preview?id=66a76d5ed15c5abc1ea65e2a"
+              delay={100}
+            />
+            <AchievementCard
+              title="HackerRank Consistency Badge"
+              date="Dec 2024"
+              description="Awarded for daily problem-solving streak, demonstrating strong commitment, problem-solving skills, and consistency in learning algorithms and data structures."
+              url="https://www.hackerrank.com/profile/somulavishnu6"
               delay={200}
             />
             <AchievementCard
@@ -278,11 +299,11 @@ export default function Home() {
       </section>
 
       {/* Social Work Section */}
-      <section id="social-work" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
+      <section id="social-work" className="py-20 bg-[#050816] bg-opacity-70 section-padding highlight-section">
         <div className="container mx-auto px-4">
           <SectionHeading title="Social Work" icon={<FaMedal className="text-[#0ef] text-4xl" />} />
 
-          <div ref={staggeredRefs.socialWork} className="grid grid-cols-1 md:grid-cols-2 gap-6 staggered-animation">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <SocialWorkCard
               title="Meenakshi Shiksha Samithi"
               description="Meenakshi Shiksha Samithi is a non-profit organization dedicated to supporting education and environmental sustainability. I actively participated in their initiatives, planting 50+ trees to promote green spaces and environmental consciousness. This initiative helped increase local biodiversity and provided a natural, healthier environment for the community."
@@ -298,25 +319,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact Us Section */}
+      {/* Contact Me Section */}
       <section id="contact-us" className="section-padding">
         <div className="container mx-auto px-4">
           <SectionHeading title="Contact Me" icon={<FaEnvelope className="text-[#0ef] text-4xl" />} />
 
-          <FadeInSection delay={100}>
-            <ContactUs />
-          </FadeInSection>
+          <ContactUs />
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-6 bg-gray-900 bg-opacity-80">
+      <footer className="py-6 bg-[#050816] bg-opacity-90">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
             &copy; {new Date().getFullYear()} Somula Vishnuvardhan Reddy. All rights reserved.
           </p>
         </div>
       </footer>
-    </>
+    </div>
   )
 }

@@ -1,26 +1,10 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import {
-  FaPython,
-  FaRProject,
-  FaDatabase,
-  FaChartBar,
-  FaFileExcel,
-  FaChartLine,
-  FaBrain,
-  FaChartArea,
-  FaTrophy,
-  FaMedal,
-  FaAward,
-  FaEnvelope,
-  FaGithub,
-} from "react-icons/fa"
-import { SiCplusplus, SiPandas, SiNumpy, SiMysql, SiTableau, SiR } from "react-icons/si"
+import { useEffect, useRef, useState } from "react"
+import { FaTrophy, FaMedal, FaAward, FaEnvelope, FaGithub, FaDatabase } from "react-icons/fa"
 import Navigation from "./components/Navigation"
 import HeroSection from "./components/HeroSection"
-import FadeInSection from "./components/FadeInSection"
-import SkillCategory from "./components/SkillCategory"
+import SkillsSection from "./components/SkillsSection"
 import ProjectCard from "./components/ProjectCard"
 import CertificationCard from "./components/CertificationCard"
 import EducationCard from "./components/EducationCard"
@@ -28,6 +12,7 @@ import AchievementCard from "./components/AchievementCard"
 import SocialWorkCard from "./components/SocialWorkCard"
 import ContactUs from "./components/ContactUs"
 import SectionHeading from "./components/SectionHeading"
+import LoadingScreen from "./components/LoadingScreen"
 import dynamic from "next/dynamic"
 
 // Dynamically import the ParticleBackground to avoid SSR issues
@@ -36,6 +21,7 @@ const ParticleBackground = dynamic(() => import("./components/ParticleBackground
 })
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true)
   const staggeredRefs = {
     certifications: useRef<HTMLDivElement>(null),
     education: useRef<HTMLDivElement>(null),
@@ -80,60 +66,29 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Define skill categories
-  const programmingSkills = [
-    { name: "C++", icon: SiCplusplus, level: 85 },
-    { name: "Python", icon: FaPython, level: 90 },
-    { name: "R", icon: FaRProject, level: 80 },
-  ]
-
-  const frameworkSkills = [
-    { name: "Pandas", icon: SiPandas, level: 85 },
-    { name: "NumPy", icon: SiNumpy, level: 80 },
-    { name: "ggplot2", icon: FaChartArea, level: 75 },
-    { name: "dplyr", icon: SiR, level: 75 },
-    { name: "caret", icon: SiR, level: 70 },
-  ]
-
-  const toolsSkills = [
-    { name: "MySQL", icon: SiMysql, level: 80 },
-    { name: "Tableau", icon: SiTableau, level: 75 },
-    { name: "Excel", icon: FaFileExcel, level: 90 },
-  ]
-
-  const mldsSkills = [
-    { name: "Statistical Analysis", icon: FaChartLine, level: 85 },
-    { name: "Data Mining", icon: FaDatabase, level: 80 },
-    { name: "Predictive Modeling", icon: FaBrain, level: 75 },
-    { name: "Data Visualization", icon: FaChartBar, level: 90 },
-  ]
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
 
   return (
     <>
-      <Navigation />
+      {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
-      {/* Hero Section */}
-      <HeroSection />
+      <div className={`cosmic-bg ${isLoading ? "hidden" : ""}`}>
+        <Navigation />
 
-      {/* Skills Section */}
-      <section id="skills" className="section-padding">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Skills" icon={<FaChartLine className="text-[#0ef] text-4xl" />} />
+        {/* Hero Section */}
+        <HeroSection />
 
-          <SkillCategory title="Programming Languages" skills={programmingSkills} delay={100} />
-          <SkillCategory title="Frameworks & Libraries" skills={frameworkSkills} delay={200} />
-          <SkillCategory title="Tools & Platforms" skills={toolsSkills} delay={300} />
-          <SkillCategory title="Machine Learning & Data Science" skills={mldsSkills} delay={400} />
-        </div>
-      </section>
+        {/* Skills Section - Now using the new interactive charts */}
+        <SkillsSection />
 
-      {/* Projects Section */}
-      <section id="projects" className="py-20 bg-gray-900 bg-opacity-30 section-padding">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Projects" icon={<FaDatabase className="text-[#0ef] text-4xl" />} />
+        {/* Projects Section */}
+        <section id="projects" className="py-20 bg-[#050816] bg-opacity-70 section-padding">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Projects" icon={<FaDatabase className="text-[#0ef] text-4xl" />} />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FadeInSection delay={100}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <ProjectCard
                 title="Binary Search Tree Visualization"
                 date="Aug 2024"
@@ -141,10 +96,9 @@ export default function Home() {
                 technologies="C++, WebAssembly, HTML, CSS, JavaScript"
                 githubUrl="https://github.com/vishnu-066/cipher_schools_project"
                 imageSrc="/images/bst-visualization.png"
+                slug="bst-visualization"
               />
-            </FadeInSection>
 
-            <FadeInSection delay={200}>
               <ProjectCard
                 title="Diabetes Prediction Model"
                 date="Nov 2024"
@@ -152,10 +106,9 @@ export default function Home() {
                 technologies="R, ggplot2, caret, dplyr"
                 githubUrl="https://github.com/vishnu-066/Diabetes-prediction-Model"
                 imageSrc="/images/diabetes-prediction.png"
+                slug="diabetes-prediction"
               />
-            </FadeInSection>
 
-            <FadeInSection delay={300}>
               <ProjectCard
                 title="Indian Population Analysis"
                 date="Oct 2024"
@@ -163,160 +116,180 @@ export default function Home() {
                 technologies="Python, Pandas, Matplotlib, Seaborn"
                 githubUrl="https://github.com/vishnu-066/population-of-india-_analysis"
                 imageSrc="/images/population-analysis.png"
+                slug="population-analysis"
               />
-            </FadeInSection>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Certifications Section */}
-      <section id="certifications" className="section-padding highlight-section">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Certifications" icon={<FaAward className="text-[#0ef] text-4xl" />} />
+        {/* Certifications Section */}
+        <section id="certifications" className="section-padding highlight-section">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Certifications" icon={<FaAward className="text-[#0ef] text-4xl" />} />
 
-          <div
-            ref={staggeredRefs.certifications}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 staggered-animation"
-          >
-            <CertificationCard title="Cloud Computing" issuer="NPTEL" date="Nov 2024" delay={100} />
-            <CertificationCard
-              title="Data Structures and Algorithms with C++"
-              issuer="Cipher Schools"
-              date="July 2024"
-              delay={200}
-            />
-            <CertificationCard title="Become a Data Scientist" issuer="LinkedIn" date="Feb 2023" delay={300} />
-            <CertificationCard title="Programming in Python" issuer="HackerRank" date="Dec 2022" delay={400} />
-            <CertificationCard
-              title="Excel Skills for Business"
-              issuer="Coursera"
-              date="May 2024"
-              url="https://www.coursera.org/account/accomplishments/specialization/ZXE2NDFGR3C3"
-              delay={500}
-            />
-            <CertificationCard
-              title="Data Analysis with Tableau"
-              issuer="Coursera"
-              date="June 2024"
-              url="https://www.coursera.org/account/accomplishments/verify/3C0MCD1QOS8M"
-              delay={600}
-            />
+            <div
+              ref={staggeredRefs.certifications}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 staggered-animation"
+            >
+              <CertificationCard
+                title="Cloud Computing"
+                issuer="NPTEL"
+                date="Nov 2024"
+                url="https://drive.google.com/file/d/1tNhlVdOQ_YV93KCCFNYJFK8WarbMIALB/view?usp=drive_link"
+                delay={100}
+              />
+              <CertificationCard
+                title="Data Structures and Algorithms with C++"
+                issuer="Cipher Schools"
+                date="July 2024"
+                url="https://www.cipherschools.com/certificate/preview?id=66a8f3e260e87d863c8fd446"
+                delay={200}
+              />
+              <CertificationCard
+                title="Become a Data Scientist"
+                issuer="LinkedIn"
+                date="Feb 2023"
+                url="https://www.linkedin.com/learning/certificates/d08bbfa3c5f91e8628eb7996f81d81152572b830101e5cd91a0e203e3ab25398"
+                delay={300}
+              />
+              <CertificationCard
+                title="Programming in Python"
+                issuer="HackerRank"
+                date="Dec 2022"
+                url="https://www.hackerrank.com/certificates/141f2bbc4534"
+                delay={400}
+              />
+              <CertificationCard
+                title="Excel Skills for Business"
+                issuer="Coursera"
+                date="May 2024"
+                url="https://www.coursera.org/account/accomplishments/specialization/ZXE2NDFGR3C3"
+                delay={500}
+              />
+              <CertificationCard
+                title="Data Analysis with Tableau"
+                issuer="Coursera"
+                date="June 2024"
+                url="https://www.coursera.org/account/accomplishments/verify/3C0MCD1QOS8M"
+                delay={600}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Education Section */}
-      <section id="education" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Education" icon={<FaGithub className="text-[#0ef] text-4xl" />} />
+        {/* Education Section */}
+        <section id="education" className="py-20 bg-[#050816] bg-opacity-70 section-padding highlight-section">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Education" icon={<FaGithub className="text-[#0ef] text-4xl" />} />
 
-          <div ref={staggeredRefs.education} className="grid grid-cols-1 gap-6 mb-12 staggered-animation">
-            <EducationCard
-              institution="Lovely Professional University, Punjab"
-              degree="B.Tech Computer Science Engineering"
-              score="CGPA 7.06"
-              delay={100}
-            />
-            <EducationCard
-              institution="Sri Chaitanya Junior College, Hyderabad"
-              degree="Intermediate"
-              score="98%"
-              delay={200}
-            />
-            <EducationCard
-              institution="St. Antony's E.M. School, Kadapa"
-              degree="Matriculation"
-              score="92%"
-              delay={300}
-            />
+            <div className="timeline-container py-10">
+              <EducationCard
+                institution="Lovely Professional University, Punjab"
+                degree="B.Tech Computer Science Engineering"
+                score="CGPA 7.06"
+                isLeft={true}
+                delay={100}
+              />
+              <EducationCard
+                institution="Sri Chaitanya Junior College, Hyderabad"
+                degree="Intermediate"
+                score="98%"
+                isLeft={false}
+                delay={300}
+              />
+              <EducationCard
+                institution="St. Antony's E.M. School, Kadapa"
+                degree="Matriculation"
+                score="92%"
+                isLeft={true}
+                delay={500}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Achievements Section */}
-      <section id="achievements" className="section-padding highlight-section">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Achievements" icon={<FaTrophy className="text-[#0ef] text-4xl" />} />
+        {/* Achievements Section */}
+        <section id="achievements" className="section-padding highlight-section">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Achievements" icon={<FaTrophy className="text-[#0ef] text-4xl" />} />
 
-          <FadeInSection>
             <div className="mb-8 text-center">
-              <p className="text-lg text-gray-300 italic">
+              <p className="text-lg text-gray-300 italic handwriting-text">
                 "Achieved excellence in tech and sports through national and interschool recognition, awards, and
                 innovation challenges."
               </p>
             </div>
-          </FadeInSection>
 
-          <div ref={staggeredRefs.achievements} className="grid grid-cols-1 gap-6 staggered-animation">
-            <AchievementCard
-              title="HackerRank Consistency Badge"
-              date="Dec 2024"
-              description="Awarded for daily problem-solving streak, demonstrating strong commitment, problem-solving skills, and consistency in learning algorithms and data structures."
-              delay={100}
-            />
-            <AchievementCard
-              title="Certificate of Excellence – Trainee"
-              date="June 2024"
-              description="Awarded by Cipher Schools for outstanding performance during Data Structures and Algorithms (DSA) training, showcasing deep understanding, practical skills, and dedication throughout the program."
-              url="https://www.cipherschools.com/certificate/preview?id=66a76d5ed15c5abc1ea65e2a"
-              delay={200}
-            />
-            <AchievementCard
-              title="Runner-up in Interschool Drone Competition – LPU"
-              date="March 2024"
-              description="Secured second place in the prestigious drone competition at Lovely Professional University, demonstrating exceptional skills in drone programming, navigation, and innovative problem-solving."
-              delay={300}
-            />
-            <AchievementCard
-              title="Winner in District Cricket Championship"
-              date="August 2023"
-              description="Led the team to victory in the district-level cricket championship, showcasing leadership, teamwork, and athletic excellence throughout the tournament."
-              delay={400}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AchievementCard
+                title="Certificate of Excellence – Trainee"
+                date="June 2024"
+                description="Awarded by Cipher Schools for outstanding performance during Data Structures and Algorithms (DSA) training, showcasing deep understanding, practical skills, and dedication throughout the program."
+                url="https://www.cipherschools.com/certificate/preview?id=66a76d5ed15c5abc1ea65e2a"
+                delay={100}
+              />
+              <AchievementCard
+                title="HackerRank Consistency Badge"
+                date="Dec 2024"
+                description="Awarded for daily problem-solving streak, demonstrating strong commitment, problem-solving skills, and consistency in learning algorithms and data structures."
+                url="https://www.hackerrank.com/profile/somulavishnu6"
+                delay={200}
+              />
+              <AchievementCard
+                title="Runner-up in Interschool Drone Competition – LPU"
+                date="March 2024"
+                description="Secured second place in the prestigious drone competition at Lovely Professional University, demonstrating exceptional skills in drone programming, navigation, and innovative problem-solving."
+                delay={300}
+              />
+              <AchievementCard
+                title="Winner in District Cricket Championship"
+                date="August 2023"
+                description="Led the team to victory in the district-level cricket championship, showcasing leadership, teamwork, and athletic excellence throughout the tournament."
+                delay={400}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Social Work Section */}
-      <section id="social-work" className="py-20 bg-gray-900 bg-opacity-30 section-padding highlight-section">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Social Work" icon={<FaMedal className="text-[#0ef] text-4xl" />} />
+        {/* Social Work Section */}
+        <section id="social-work" className="py-20 bg-[#050816] bg-opacity-70 section-padding highlight-section">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Social Work" icon={<FaMedal className="text-[#0ef] text-4xl" />} />
 
-          <div ref={staggeredRefs.socialWork} className="grid grid-cols-1 md:grid-cols-2 gap-6 staggered-animation">
-            <SocialWorkCard
-              title="Meenakshi Shiksha Samithi"
-              description="Meenakshi Shiksha Samithi is a non-profit organization dedicated to supporting education and environmental sustainability. I actively participated in their initiatives, planting 50+ trees to promote green spaces and environmental consciousness. This initiative helped increase local biodiversity and provided a natural, healthier environment for the community."
-              url="https://drive.google.com/file/d/1zxoljsB4s4LqKpBSOs2qk31s_i1hynZQ/view?usp=drive_link"
-              delay={100}
-            />
-            <SocialWorkCard
-              title="COVID-19 Relief Efforts"
-              description="Volunteered in distributing masks, groceries, and essential supplies to families during the pandemic, supporting public health and community welfare. My efforts were focused on helping vulnerable groups during a critical time, ensuring that families had the necessary resources to navigate the crisis safely."
-              delay={200}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SocialWorkCard
+                title="Meenakshi Shiksha Samithi"
+                description="Meenakshi Shiksha Samithi is a non-profit organization dedicated to supporting education and environmental sustainability. I actively participated in their initiatives, planting 50+ trees to promote green spaces and environmental consciousness. This initiative helped increase local biodiversity and provided a natural, healthier environment for the community."
+                url="https://drive.google.com/file/d/1zxoljsB4s4LqKpBSOs2qk31s_i1hynZQ/view?usp=drive_link"
+                delay={100}
+              />
+              <SocialWorkCard
+                title="COVID-19 Relief Efforts"
+                description="Volunteered in distributing masks, groceries, and essential supplies to families during the pandemic, supporting public health and community welfare. My efforts were focused on helping vulnerable groups during a critical time, ensuring that families had the necessary resources to navigate the crisis safely."
+                delay={200}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Us Section */}
-      <section id="contact-us" className="section-padding">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Contact Me" icon={<FaEnvelope className="text-[#0ef] text-4xl" />} />
+        {/* Contact Me Section */}
+        <section id="contact-us" className="section-padding">
+          <div className="container mx-auto px-4">
+            <SectionHeading title="Contact Me" icon={<FaEnvelope className="text-[#0ef] text-4xl" />} />
 
-          <FadeInSection delay={100}>
             <ContactUs />
-          </FadeInSection>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-6 bg-gray-900 bg-opacity-80">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Somula Vishnuvardhan Reddy. All rights reserved.
-          </p>
-        </div>
-      </footer>
+        {/* Footer */}
+        <footer className="py-6 bg-[#050816] bg-opacity-90">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-gray-400">
+              &copy; {new Date().getFullYear()} Somula Vishnuvardhan Reddy. All rights reserved.
+            </p>
+          </div>
+        </footer>
+      </div>
     </>
   )
 }

@@ -1,9 +1,7 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useEffect, useRef } from "react"
-import { FaTrophy } from "react-icons/fa"
+import { motion } from "framer-motion"
+import { FaTrophy, FaExternalLinkAlt } from "react-icons/fa"
 
 interface AchievementCardProps {
   title: string
@@ -14,69 +12,37 @@ interface AchievementCardProps {
 }
 
 const AchievementCard = ({ title, date, description, url, delay = 0 }: AchievementCardProps) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const cardRef = useRef<HTMLDivElement | HTMLAnchorElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              setIsVisible(true)
-            }, delay)
-          }
-        })
-      },
-      { threshold: 0.1 },
-    )
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current)
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current)
-      }
-    }
-  }, [delay])
-
-  const content = (
-    <>
-      <div className="achievement-icon mr-4 mt-1 flex-shrink-0">
-        <FaTrophy className="text-2xl enhanced-icon" />
-      </div>
-      <div>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-          <h3 className="text-lg font-bold text-neon-pink">{title}</h3>
-          <span className="text-sm text-gray-400">{date}</span>
-        </div>
-        <p className="text-gray-300">{description}</p>
-      </div>
-    </>
-  )
-
-  const cardClasses = `enhanced-card rounded-lg p-6 flex items-start ${isVisible ? "scale-in" : "opacity-0"}`
-
-  if (url) {
-    return (
-      <a
-        ref={cardRef as React.RefObject<HTMLAnchorElement>}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cardClasses}
-      >
-        {content}
-      </a>
-    )
-  }
-
   return (
-    <div ref={cardRef as React.RefObject<HTMLDivElement>} className={cardClasses}>
-      {content}
-    </div>
+    <motion.div
+      className="achievement-badge"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: delay / 1000 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(255, 42, 109, 0.2)" }}
+    >
+      <div className="flex items-center mb-4">
+        <div className="achievement-icon mr-3">
+          <FaTrophy className="text-2xl text-[#ff4ec8]" />
+        </div>
+        <h3 className="text-lg font-bold text-[#ff4ec8]">{title}</h3>
+        {url && (
+          <motion.a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 text-[#05d9e8] hover:text-[#ff4ec8]"
+            whileHover={{ scale: 1.2 }}
+          >
+            <FaExternalLinkAlt />
+          </motion.a>
+        )}
+      </div>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+        <span className="text-sm text-gray-400">{date}</span>
+      </div>
+      <p className="text-gray-300">{description}</p>
+    </motion.div>
   )
 }
 

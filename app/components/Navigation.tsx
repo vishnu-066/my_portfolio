@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import Link from "next/link"
-import { FaDownload } from "react-icons/fa"
+import { FaLinkedin, FaGithub } from "react-icons/fa"
 import Dropdown from "./Dropdown"
-import NeonButton from "./NeonButton"
-import "./navigation-effects.css"
+import LeetCodeIcon from "./LeetCodeIcon"
 
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState("home")
@@ -15,7 +15,7 @@ const Navigation = () => {
   const dropdownItems = [
     { name: "Achievements", href: "#achievements" },
     { name: "Social Work", href: "#social-work" },
-    { name: "Contact Us", href: "#contact-us" },
+    { name: "Contact Me", href: "#contact-us" },
   ]
 
   useEffect(() => {
@@ -66,67 +66,79 @@ const Navigation = () => {
   return (
     <header
       className={`fixed top-0 left-0 w-full px-[10%] py-5 flex justify-between items-center z-50 transition-all duration-500 ${
-        scrolled ? "bg-opacity-90 backdrop-blur-sm bg-gray-900" : "bg-transparent"
+        scrolled ? "bg-opacity-90 backdrop-blur-sm bg-[#050816]" : "bg-transparent"
       }`}
     >
-      <Link href="/" className="text-2xl font-semibold text-white logo-text">
+      <Link href="/" className="text-2xl font-semibold text-white neon-text">
         Portfolio
       </Link>
 
-      <nav className="navbar hidden md:block">
-        <button
-          onClick={() => scrollToSection("home")}
-          className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 ${
-            activeSection === "home" ? "text-[#0ef]" : "text-white"
-          }`}
-        >
-          Home
-        </button>
-        <button
-          onClick={() => scrollToSection("skills")}
-          className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 ${
-            activeSection === "skills" ? "text-[#0ef]" : "text-white"
-          }`}
-        >
-          Skills
-        </button>
-        <button
-          onClick={() => scrollToSection("projects")}
-          className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 ${
-            activeSection === "projects" ? "text-[#0ef]" : "text-white"
-          }`}
-        >
-          Projects
-        </button>
-        <button
-          onClick={() => scrollToSection("certifications")}
-          className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 ${
-            activeSection === "certifications" ? "text-[#0ef]" : "text-white"
-          }`}
-        >
-          Certifications
-        </button>
-        <button
-          onClick={() => scrollToSection("education")}
-          className={`bubble-button text-lg font-medium ml-8 transition-colors duration-300 ${
-            activeSection === "education" ? "text-[#0ef]" : "text-white"
-          }`}
-        >
-          Education
-        </button>
-        <Dropdown title="More" items={dropdownItems} />
-      </nav>
+      <nav className="navbar hidden md:flex items-center">
+        {["home", "skills", "projects", "certifications", "education"].map((section) => (
+          <motion.button
+            key={section}
+            onClick={() => scrollToSection(section)}
+            className={`text-lg font-medium ml-8 transition-colors duration-300 ${
+              activeSection === section ? "text-[#05d9e8] neon-text" : "text-white"
+            }`}
+            whileHover={{
+              color: "#05d9e8",
+              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+            }}
+          >
+            {section.charAt(0).toUpperCase() + section.slice(1)}
+          </motion.button>
+        ))}
 
-      <div className="hidden md:block">
-        <NeonButton
-          href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center"
-        >
-          <FaDownload className="mr-2" /> Resume
-        </NeonButton>
-      </div>
+        <Dropdown title="More" items={dropdownItems} />
+
+        <div className="flex space-x-4 ml-8">
+          <motion.a
+            href="https://linkedin.com/in/vishnuvardhan06/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white p-2"
+            whileHover={{
+              scale: 1.1,
+              color: "#05d9e8",
+              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+            }}
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin size={20} />
+          </motion.a>
+
+          <motion.a
+            href="https://github.com/vishnu-066?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white p-2"
+            whileHover={{
+              scale: 1.1,
+              color: "#05d9e8",
+              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+            }}
+            aria-label="GitHub"
+          >
+            <FaGithub size={20} />
+          </motion.a>
+
+          <motion.a
+            href="https://leetcode.com/u/Vishnu_vardhan_2004/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white p-2"
+            whileHover={{
+              scale: 1.1,
+              color: "#05d9e8",
+              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+            }}
+            aria-label="LeetCode"
+          >
+            <LeetCodeIcon size={20} />
+          </motion.a>
+        </div>
+      </nav>
 
       {/* Mobile menu button */}
       <button className="md:hidden text-white focus:outline-none" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -147,84 +159,88 @@ const Navigation = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm">
+        <motion.div
+          className="md:hidden absolute top-full left-0 right-0 bg-[#050816] bg-opacity-95 backdrop-blur-sm"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <button
-              onClick={() => scrollToSection("home")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "home" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Home
-            </button>
-            <button
-              onClick={() => scrollToSection("skills")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "skills" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Skills
-            </button>
-            <button
-              onClick={() => scrollToSection("projects")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "projects" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => scrollToSection("certifications")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "certifications" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Certifications
-            </button>
-            <button
-              onClick={() => scrollToSection("education")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "education" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Education
-            </button>
-            <button
-              onClick={() => scrollToSection("achievements")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "achievements" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Achievements
-            </button>
-            <button
-              onClick={() => scrollToSection("social-work")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "social-work" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Social Work
-            </button>
-            <button
-              onClick={() => scrollToSection("contact-us")}
-              className={`block w-full text-left px-3 py-2 rounded-md ${
-                activeSection === "contact-us" ? "text-[#0ef]" : "text-white"
-              }`}
-            >
-              Contact Us
-            </button>
-            <div className="mt-4 px-3">
-              <NeonButton
-                href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
+            {[
+              "home",
+              "skills",
+              "projects",
+              "certifications",
+              "education",
+              "achievements",
+              "social-work",
+              "contact-us",
+            ].map((section) => (
+              <motion.button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className={`block w-full text-left px-3 py-2 rounded-md ${
+                  activeSection === section ? "text-[#05d9e8] neon-text" : "text-white"
+                }`}
+                whileHover={{
+                  backgroundColor: "rgba(5, 217, 232, 0.1)",
+                  color: "#05d9e8",
+                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                }}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, " ")}
+              </motion.button>
+            ))}
+
+            <div className="flex justify-center space-x-6 mt-4 px-3 py-2">
+              <motion.a
+                href="https://linkedin.com/in/vishnuvardhan06/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full"
+                className="text-white"
+                whileHover={{
+                  scale: 1.1,
+                  color: "#05d9e8",
+                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                }}
+                aria-label="LinkedIn"
               >
-                <FaDownload className="mr-2 inline" /> Resume
-              </NeonButton>
+                <FaLinkedin size={24} />
+              </motion.a>
+
+              <motion.a
+                href="https://github.com/vishnu-066?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white"
+                whileHover={{
+                  scale: 1.1,
+                  color: "#05d9e8",
+                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                }}
+                aria-label="GitHub"
+              >
+                <FaGithub size={24} />
+              </motion.a>
+
+              <motion.a
+                href="https://leetcode.com/u/Vishnu_vardhan_2004/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white"
+                whileHover={{
+                  scale: 1.1,
+                  color: "#05d9e8",
+                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                }}
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size={24} />
+              </motion.a>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </header>
   )

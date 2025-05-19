@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import * as THREE from "three"
 
 interface CosmicProfileProps {
   imageSrc: string
@@ -10,265 +11,146 @@ interface CosmicProfileProps {
 }
 
 const CosmicProfile = ({ imageSrc, size = 250 }: CosmicProfileProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
+    if (!containerRef.current || !canvasRef.current) return
+
     const canvas = canvasRef.current
-    if (!canvas) return
+    const container = containerRef.current
+    const rect = container.getBoundingClientRect()
 
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    // Set up Three.js scene
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000)
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    })
 
-    let animationFrameId: number
-    const particles: Array<{
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
-      color: string
-      alpha: number
-      decay: number
-      angle: number
-      radius: number
-      orbitSpeed: number
-    }> = []
+    renderer.setSize(size * 1.5, size * 1.5)
+    renderer.setPixelRatio(window.devicePixelRatio)
 
-    const colors = ["#ff4ec8", "#6a5af9", "#00ffe7", "#0ef"]
+    // Create a torus for the 3D ring effect
+    const torusGeometry = new THREE.TorusGeometry(size / 3, 2, 16, 100)
+    const torusMaterial = new THREE.MeshBasicMaterial({
+      color: 0x05d9e8,
+      transparent: true,
+      opacity: 0.7,
+    })
+    const torus = new THREE.Mesh(torusGeometry, torusMaterial)
+    scene.add(torus)
 
-    const resizeCanvas = () => {
-      canvas.width = size * 1.8
-      canvas.height = size * 1.8
+    // Create a second torus with different rotation
+    const torus2Geometry = new THREE.TorusGeometry(size / 2.7, 1.5, 16, 100)
+    const torus2Material = new THREE.MeshBasicMaterial({
+      color: 0xff4ec8,
+      transparent: true,
+      opacity: 0.5,
+    })
+    const torus2 = new THREE.Mesh(torus2Geometry, torus2Material)
+    torus2.rotation.x = Math.PI / 2
+    scene.add(torus2)
+
+    // Add particles
+    const particlesGeometry = new THREE.BufferGeometry()
+    const particlesCount = 200
+    const posArray = new Float32Array(particlesCount * 3)
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+      // Create a sphere of particles around the center
+      const angle = Math.random() * Math.PI * 2
+      const radius = (Math.random() * size) / 2 + size / 4
+      const i3 = i * 3
+
+      posArray[i3] = Math.cos(angle) * radius * Math.random()
+      posArray[i3 + 1] = (Math.random() - 0.5) * radius
+      posArray[i3 + 2] = Math.sin(angle) * radius * Math.random()
     }
 
-    const createParticles = () => {
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
-      const radius = size / 2 - 10
+    particlesGeometry.setAttribute("position", new THREE.BufferAttribute(posArray, 3))
 
-      // Create orbiting particles
-      for (let i = 0; i < 30; i++) {
-        const angle = Math.random() * Math.PI * 2
-        const orbitRadius = radius * 0.9 + Math.random() * radius * 0.4
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 2,
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+    })
 
-        particles.push({
-          x: centerX + Math.cos(angle) * orbitRadius,
-          y: centerY + Math.sin(angle) * orbitRadius,
-          size: Math.random() * 4 + 1,
-          speedX: (Math.random() - 0.5) * 0.2,
-          speedY: (Math.random() - 0.5) * 0.2,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.8 + 0.2,
-          decay: Math.random() * 0.005 + 0.002,
-          angle: angle,
-          radius: orbitRadius,
-          orbitSpeed: (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1),
-        })
-      }
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial)
+    scene.add(particlesMesh)
 
-      // Create floating particles
-      for (let i = 0; i < 20; i++) {
-        const angle = Math.random() * Math.PI * 2
-        const distance = radius * 1.2 + Math.random() * radius * 0.5
+    camera.position.z = size / 1.5
 
-        particles.push({
-          x: centerX + Math.cos(angle) * distance,
-          y: centerY + Math.sin(angle) * distance,
-          size: Math.random() * 3 + 0.5,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: (Math.random() - 0.5) * 0.5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.7 + 0.3,
-          decay: Math.random() * 0.01 + 0.005,
-          angle: 0,
-          radius: 0,
-          orbitSpeed: 0,
-        })
-      }
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate)
+
+      torus.rotation.x += 0.01
+      torus.rotation.y += 0.005
+
+      torus2.rotation.y += 0.007
+      torus2.rotation.z += 0.003
+
+      particlesMesh.rotation.y += 0.002
+
+      renderer.render(scene, camera)
     }
 
-    const drawParticles = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+    animate()
 
-      // Draw outer glow
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
-      const radius = size / 2 + 10
-
-      // Create radial gradient for the cosmic glow
-      const gradient = ctx.createRadialGradient(centerX, centerY, radius - 20, centerX, centerY, radius + 40)
-      gradient.addColorStop(0, "rgba(255, 78, 200, 0.3)")
-      gradient.addColorStop(0.5, "rgba(106, 90, 249, 0.2)")
-      gradient.addColorStop(1, "rgba(0, 255, 231, 0)")
-
-      ctx.fillStyle = gradient
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius + 40, 0, Math.PI * 2)
-      ctx.fill()
-
-      // Draw particles
-      particles.forEach((particle, index) => {
-        ctx.globalAlpha = particle.alpha
-        ctx.fillStyle = particle.color
-        ctx.beginPath()
-
-        // Update orbiting particles
-        if (particle.orbitSpeed !== 0) {
-          // This is an orbiting particle
-          particle.angle += particle.orbitSpeed
-          particle.x = centerX + Math.cos(particle.angle) * particle.radius
-          particle.y = centerY + Math.sin(particle.angle) * particle.radius
-
-          // Add slight variation to orbit
-          particle.radius += (Math.random() - 0.5) * 0.3
-
-          // Keep radius within bounds
-          if (particle.radius < radius * 0.8) particle.radius = radius * 0.8
-          if (particle.radius > radius * 1.3) particle.radius = radius * 1.3
-
-          // Draw with glow
-          ctx.shadowBlur = 10
-          ctx.shadowColor = particle.color
-        } else {
-          // This is a floating particle
-          particle.x += particle.speedX
-          particle.y += particle.speedY
-
-          // Boundary check and bounce
-          if (particle.x < centerX - radius * 1.5 || particle.x > centerX + radius * 1.5) {
-            particle.speedX *= -1
-          }
-          if (particle.y < centerY - radius * 1.5 || particle.y > centerY + radius * 1.5) {
-            particle.speedY *= -1
-          }
-
-          ctx.shadowBlur = 5
-          ctx.shadowColor = particle.color
-        }
-
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.shadowBlur = 0
-
-        // Fade particles and regenerate
-        particle.alpha -= particle.decay
-
-        if (particle.alpha <= 0) {
-          if (particle.orbitSpeed !== 0) {
-            // Regenerate orbiting particle
-            const angle = Math.random() * Math.PI * 2
-            const orbitRadius = radius * 0.9 + Math.random() * radius * 0.4
-
-            particles[index] = {
-              x: centerX + Math.cos(angle) * orbitRadius,
-              y: centerY + Math.sin(angle) * orbitRadius,
-              size: Math.random() * 4 + 1,
-              speedX: (Math.random() - 0.5) * 0.2,
-              speedY: (Math.random() - 0.5) * 0.2,
-              color: colors[Math.floor(Math.random() * colors.length)],
-              alpha: Math.random() * 0.8 + 0.2,
-              decay: Math.random() * 0.005 + 0.002,
-              angle: angle,
-              radius: orbitRadius,
-              orbitSpeed: (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1),
-            }
-          } else {
-            // Regenerate floating particle
-            const angle = Math.random() * Math.PI * 2
-            const distance = radius * 1.2 + Math.random() * radius * 0.5
-
-            particles[index] = {
-              x: centerX + Math.cos(angle) * distance,
-              y: centerY + Math.sin(angle) * distance,
-              size: Math.random() * 3 + 0.5,
-              speedX: (Math.random() - 0.5) * 0.5,
-              speedY: (Math.random() - 0.5) * 0.5,
-              color: colors[Math.floor(Math.random() * colors.length)],
-              alpha: Math.random() * 0.7 + 0.3,
-              decay: Math.random() * 0.01 + 0.005,
-              angle: 0,
-              radius: 0,
-              orbitSpeed: 0,
-            }
-          }
-        }
-      })
-
-      // Draw rotating rings with time-based animation
-      const time = Date.now() / 1000
-
-      // First ring - pink
-      ctx.strokeStyle = "#ff4ec8"
-      ctx.lineWidth = 2
-      ctx.globalAlpha = 0.6 + Math.sin(time) * 0.2
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius + 5, 0, Math.PI * 2)
-      ctx.stroke()
-
-      // Second ring - blue
-      ctx.strokeStyle = "#00ffe7"
-      ctx.lineWidth = 2
-      ctx.globalAlpha = 0.6 + Math.cos(time) * 0.2
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius + 15, 0, Math.PI * 2)
-      ctx.stroke()
-
-      // Third ring - purple
-      ctx.strokeStyle = "#6a5af9"
-      ctx.lineWidth = 1.5
-      ctx.globalAlpha = 0.5 + Math.sin(time * 1.5) * 0.2
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius + 25, 0, Math.PI * 2)
-      ctx.stroke()
-
-      // Add glow to rings
-      ctx.shadowBlur = 15
-      ctx.shadowColor = "#00ffe7"
-      ctx.strokeStyle = "#00ffe7"
-      ctx.lineWidth = 1
-      ctx.globalAlpha = 0.4 + Math.sin(time * 0.8) * 0.1
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius + 35, 0, Math.PI * 2)
-      ctx.stroke()
-      ctx.shadowBlur = 0
-
-      ctx.globalAlpha = 1
-
-      animationFrameId = requestAnimationFrame(drawParticles)
+    // Handle resize
+    const handleResize = () => {
+      renderer.setSize(size * 1.5, size * 1.5)
     }
 
-    resizeCanvas()
-    createParticles()
-    drawParticles()
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener("resize", handleResize)
+
+      // Clean up Three.js resources
+      scene.remove(torus)
+      scene.remove(torus2)
+      scene.remove(particlesMesh)
+
+      torusGeometry.dispose()
+      torusMaterial.dispose()
+      torus2Geometry.dispose()
+      torus2Material.dispose()
+      particlesGeometry.dispose()
+      particlesMaterial.dispose()
+
+      renderer.dispose()
     }
   }, [size])
 
   return (
-    <div className="cosmic-profile-container floating-animation" style={{ width: size, height: size }}>
+    <div ref={containerRef} className="cosmic-profile-container relative" style={{ width: size, height: size }}>
       <canvas
         ref={canvasRef}
-        className="absolute top-0 left-0 z-0"
-        style={{ width: size * 1.8, height: size * 1.8, transform: `translate(-${size * 0.4}px, -${size * 0.4}px)` }}
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0"
+        style={{ width: size * 1.5, height: size * 1.5 }}
       />
+
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10"
+        className="relative z-10 rounded-full overflow-hidden"
+        style={{ width: size, height: size }}
+        whileHover={{ scale: 1.05 }}
       >
-        <div className="cosmic-image-container pulse-glow" style={{ width: size, height: size }}>
-          <Image
-            src={imageSrc || "/placeholder.svg"}
-            alt="Profile"
-            width={size}
-            height={size}
-            className="rounded-full object-cover border-4 border-[#00ffe7] shadow-[0_0_15px_rgba(0,255,231,0.8)]"
-            priority
-          />
-        </div>
+        <Image
+          src={imageSrc || "/placeholder.svg"}
+          alt="Profile"
+          width={size}
+          height={size}
+          className="rounded-full object-cover"
+          priority
+        />
       </motion.div>
     </div>
   )

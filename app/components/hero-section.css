@@ -14,6 +14,7 @@
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
 }
 
 .cosmic-social-btn::before {
@@ -32,7 +33,8 @@
 .cosmic-social-btn:hover {
   transform: translateY(-5px);
   color: #fff;
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5), 0 0 25px rgba(5, 217, 232, 0.3);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
 .cosmic-social-btn:hover::before {
@@ -54,6 +56,8 @@
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   backdrop-filter: blur(5px);
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.3), 0 0 5px rgba(255, 42, 109, 0.2);
+  text-shadow: 0 0 5px rgba(5, 217, 232, 0.5);
 }
 
 .cosmic-resume-btn::before {
@@ -72,7 +76,7 @@
 .cosmic-resume-btn:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px -5px rgba(5, 217, 232, 0.4), 0 5px 10px rgba(255, 42, 109, 0.3);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
 }
 
 .cosmic-resume-btn:hover::before {

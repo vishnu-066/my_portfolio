@@ -22,18 +22,18 @@ const EducationCard = ({ institution, degree, score, isLeft = true, delay = 0 }:
     >
       <div className="cosmic-card p-6">
         <div className="flex items-center mb-3">
-          <FaGraduationCap className="text-2xl text-[#05d9e8] mr-3" />
-          <h3 className="text-lg font-bold text-[#05d9e8]">{institution}</h3>
+          <FaGraduationCap className="text-2xl gradient-icon mr-3" />
+          <h3 className="text-lg font-bold gradient-text-primary">{institution}</h3>
         </div>
 
         <div className="flex items-center mb-2 text-gray-300">
-          <FaUniversity className="text-sm mr-2 text-[#ff4ec8]" />
+          <FaUniversity className="text-sm mr-2 gradient-icon" />
           <p>{degree}</p>
         </div>
 
         <div className="flex items-center text-gray-400 text-sm">
-          <FaClock className="text-sm mr-2 text-[#ff4ec8]" />
-          <p>{score}</p>
+          <FaClock className="text-sm mr-2 gradient-icon" />
+          <p className="gradient-text">{score}</p>
         </div>
       </div>
     </motion.div>

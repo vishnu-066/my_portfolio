@@ -14,9 +14,29 @@
   --cosmic-teal: #08e1ae;
   --cosmic-orange: #ff8c00;
   --cosmic-green: #39ff14;
+
+  /* Gradient Variables */
+  --gradient-primary: linear-gradient(135deg, #05d9e8 0%, #ff4ec8 50%, #9d4edd 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff4ec8 0%, #05d9e8 50%, #39ff14 100%);
+  --gradient-tertiary: linear-gradient(135deg, #9d4edd 0%, #ff8c00 50%, #05d9e8 100%);
+  --gradient-cosmic: linear-gradient(135deg, #050816 0%, #0a192f 50%, #1a1a2e 100%);
+  --gradient-text: linear-gradient(135deg, #05d9e8 0%, #ff4ec8 100%);
+  --gradient-border: linear-gradient(135deg, #05d9e8 0%, #ff4ec8 50%, #9d4edd 100%);
 }
 
 /* Animation keyframes */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @keyframes gradientBackground {
   0% {
     background-position: 0% 50%;
@@ -156,7 +176,7 @@ html {
 }
 
 body {
-  background-color: var(--deep-space);
+  background: var(--gradient-cosmic);
   color: white;
   margin: 0;
   padding: 0;
@@ -165,11 +185,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Cosmic background */
+/* Cosmic background with gradients */
 .cosmic-bg {
   position: relative;
   overflow-x: hidden;
-  background: linear-gradient(to bottom, #050816, #0a192f, #050816);
+  background: linear-gradient(135deg, #050816 0%, #0a192f 25%, #1a1a2e 50%, #0a192f 75%, #050816 100%);
+  background-size: 400% 400%;
+  animation: gradientBackground 15s ease infinite;
 }
 
 .cosmic-bg::before {
@@ -179,28 +201,64 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 10% 20%, rgba(5, 217, 232, 0.03) 0%, transparent 20%),
-    radial-gradient(circle at 90% 50%, rgba(255, 42, 109, 0.03) 0%, transparent 25%),
-    radial-gradient(circle at 30% 70%, rgba(5, 217, 232, 0.03) 0%, transparent 30%),
-    radial-gradient(circle at 70% 90%, rgba(255, 42, 109, 0.03) 0%, transparent 35%);
+  background: radial-gradient(circle at 10% 20%, rgba(5, 217, 232, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 50%, rgba(255, 42, 109, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 30% 70%, rgba(157, 78, 221, 0.05) 0%, transparent 30%),
+    radial-gradient(circle at 70% 90%, rgba(255, 140, 0, 0.05) 0%, transparent 35%);
   z-index: -1;
-  animation: gradientBackground 15s ease infinite;
+  animation: gradientBackground 20s ease infinite;
 }
 
-/* Neon elements */
+/* Gradient text utilities */
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+.gradient-text-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.gradient-text-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+/* Neon elements with gradients */
 .neon-text {
-  color: #fff;
-  text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(5, 217, 232, 0.5), 0 0 20px rgba(255, 78, 200, 0.3);
 }
 
 .neon-text-pink {
-  color: #fff;
-  text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink);
+  background: linear-gradient(135deg, #ff4ec8 0%, #ff2a6d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(255, 78, 200, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
 }
 
 .neon-border {
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 5px var(--neon-blue), inset 0 0 5px var(--neon-blue);
+  border: 2px solid transparent;
+  background: var(--gradient-border) border-box;
+  background-clip: border-box;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.3), inset 0 0 15px rgba(255, 78, 200, 0.1);
 }
 
 .neon-glow {
@@ -211,61 +269,41 @@ body {
   animation: neonPulse 3s infinite;
 }
 
-/* Social icons */
-.social-icon-cosmic {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(5, 8, 22, 0.5);
-  border: 2px solid;
-  border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-pink)) 1;
-  color: white;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
+/* Cards and sections with gradients */
+.cosmic-card {
+  background: linear-gradient(135deg, rgba(5, 8, 22, 0.8) 0%, rgba(10, 25, 47, 0.6) 50%, rgba(26, 26, 46, 0.8) 100%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  transition: all 0.3s ease;
   overflow: hidden;
-  backdrop-filter: blur(5px);
+  position: relative;
 }
 
-.social-icon-cosmic::before {
+.cosmic-card::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, rgba(5, 217, 232, 0.2), rgba(255, 42, 109, 0.2));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: var(--gradient-border);
+  border-radius: 15px;
+  padding: 1px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
   z-index: -1;
 }
 
-.social-icon-cosmic:hover {
-  transform: scale(1.1);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.7), 0 0 25px rgba(5, 217, 232, 0.5);
-  animation: pulse 1.5s infinite;
-}
-
-.social-icon-cosmic:hover::before {
-  opacity: 1;
-}
-
-/* Cards and sections */
-.cosmic-card {
-  background: rgba(5, 8, 22, 0.7);
-  border: 1px solid rgba(5, 217, 232, 0.2);
-  border-radius: 10px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
 .cosmic-card:hover {
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(5, 217, 232, 0.2), 0 5px 15px rgba(255, 78, 200, 0.1);
+}
+
+.cosmic-card:hover::before {
+  background: linear-gradient(135deg, #05d9e8 0%, #ff4ec8 50%, #9d4edd 100%);
+  animation: gradientShift 2s ease infinite;
 }
 
 .section-padding {
@@ -276,16 +314,20 @@ body {
   justify-content: center;
 }
 
-/* Handwriting font for about text */
+/* Handwriting font for about text with gradient */
 .handwriting-text {
   font-family: var(--font-dancing-script);
   font-size: 1.5rem;
   line-height: 1.6;
-  color: #fff;
-  text-shadow: 0 0 5px var(--neon-cyan);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
 }
 
-/* Timeline styles */
+/* Timeline styles with gradients */
 .timeline-container {
   position: relative;
   max-width: 1200px;
@@ -295,13 +337,14 @@ body {
 .timeline-container::after {
   content: "";
   position: absolute;
-  width: 3px;
-  background: linear-gradient(to bottom, var(--neon-blue), var(--neon-pink));
+  width: 4px;
+  background: var(--gradient-primary);
   top: 0;
   bottom: 0;
   left: 50%;
-  margin-left: -1.5px;
-  box-shadow: 0 0 8px var(--neon-blue);
+  margin-left: -2px;
+  border-radius: 2px;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
 }
 
 .timeline-item {
@@ -316,12 +359,12 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: var(--deep-space);
-  border: 3px solid var(--neon-blue);
+  background: var(--gradient-primary);
+  border: 3px solid var(--deep-space);
   border-radius: 50%;
   top: 15px;
   z-index: 1;
-  box-shadow: 0 0 8px var(--neon-blue);
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.7);
 }
 
 .timeline-left {
@@ -340,91 +383,126 @@ body {
   left: -10px;
 }
 
-/* Badge styles */
+/* Badge styles with gradients */
 .achievement-badge {
   position: relative;
-  padding: 20px;
-  border-radius: 10px;
-  background: rgba(5, 8, 22, 0.7);
-  border: 1px solid rgba(5, 217, 232, 0.2);
+  padding: 25px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(5, 8, 22, 0.8) 0%, rgba(10, 25, 47, 0.6) 100%);
+  border: 1px solid transparent;
   transition: all 0.3s ease;
-}
-
-.achievement-badge:hover {
-  transform: translateY(-5px);
-  border-color: var(--neon-pink);
-  box-shadow: 0 10px 20px rgba(255, 42, 109, 0.2);
+  overflow: hidden;
 }
 
 .achievement-badge::before {
   content: "";
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-border);
   border-radius: 15px;
-  background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-blue));
+  padding: 1px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
   z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+}
+
+.achievement-badge:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(255, 42, 109, 0.3), 0 5px 15px rgba(5, 217, 232, 0.2);
 }
 
 .achievement-badge:hover::before {
-  opacity: 0.3;
+  background: linear-gradient(135deg, #ff4ec8 0%, #9d4edd 50%, #05d9e8 100%);
+  animation: gradientShift 2s ease infinite;
 }
 
-/* View certificate icon */
+/* View certificate icon with gradient */
 .view-certificate {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  background: rgba(5, 8, 22, 0.7);
-  border: 1px solid var(--neon-blue);
-  color: var(--neon-blue);
+  background: var(--gradient-primary);
+  color: white;
   transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
 }
 
 .view-certificate:hover {
-  background: rgba(5, 217, 232, 0.1);
-  box-shadow: 0 0 10px var(--neon-blue);
-  transform: scale(1.1);
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(5, 217, 232, 0.8);
 }
 
-/* Form styles */
+/* Form styles with gradients */
 .cosmic-input {
-  background: rgba(5, 8, 22, 0.7);
-  border: 1px solid rgba(5, 217, 232, 0.3);
-  border-radius: 5px;
+  background: linear-gradient(135deg, rgba(5, 8, 22, 0.8) 0%, rgba(10, 25, 47, 0.6) 100%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  border-radius: 8px;
   color: white;
-  padding: 10px 15px;
+  padding: 12px 16px;
   transition: all 0.3s ease;
+  position: relative;
+}
+
+.cosmic-input::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-border);
+  border-radius: 8px;
+  padding: 1px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: -1;
 }
 
 .cosmic-input:focus {
   outline: none;
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+  box-shadow: 0 0 20px rgba(5, 217, 232, 0.5);
 }
 
 .cosmic-button {
-  background: rgba(5, 8, 22, 0.7);
-  border: 2px solid var(--neon-blue);
-  border-radius: 5px;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 8px;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   transition: all 0.3s ease;
-  text-shadow: 0 0 5px var(--neon-blue);
-  box-shadow: 0 0 5px var(--neon-blue);
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
 }
 
 .cosmic-button:hover {
-  background: rgba(5, 217, 232, 0.1);
-  box-shadow: 0 0 15px var(--neon-blue);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(5, 217, 232, 0.4), 0 5px 15px rgba(255, 78, 200, 0.3);
+}
+
+/* Icon gradients */
+.gradient-icon {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(5, 217, 232, 0.5));
+}
+
+.social-work-icon,
+.certification-icon,
+.achievement-icon {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(5, 217, 232, 0.5));
 }
 
 /* Responsive styles */
@@ -448,135 +526,21 @@ body {
   }
 }
 
-/* Hero section specific styles */
-.cosmic-social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(10, 25, 47, 0.5);
-  border: 2px solid;
-  border-image: linear-gradient(45deg, #05d9e8, #ff2a6d) 1;
-  color: white;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
-}
-
-.cosmic-social-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, rgba(5, 217, 232, 0.2), rgba(255, 42, 109, 0.2));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-}
-
-.cosmic-social-btn:hover {
-  transform: translateY(-5px);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5), 0 0 25px rgba(5, 217, 232, 0.3);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-}
-
-.cosmic-social-btn:hover::before {
-  opacity: 1;
-}
-
-.cosmic-resume-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 12px 28px;
-  background: linear-gradient(45deg, rgba(5, 217, 232, 0.1), rgba(255, 42, 109, 0.1));
-  border: 2px solid;
-  border-image: linear-gradient(45deg, #05d9e8, #ff2a6d) 1;
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(5px);
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.3), 0 0 5px rgba(255, 42, 109, 0.2);
-  text-shadow: 0 0 5px rgba(5, 217, 232, 0.5);
-}
-
-.cosmic-resume-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, rgba(5, 217, 232, 0.2), rgba(255, 42, 109, 0.2));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-}
-
-.cosmic-resume-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(5, 217, 232, 0.4), 0 5px 10px rgba(255, 42, 109, 0.3);
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-}
-
-.cosmic-resume-btn:hover::before {
-  opacity: 1;
-}
-
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.floating-animation {
-  animation: floatAnimation 6s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 10px rgba(5, 217, 232, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(5, 217, 232, 0.8), 0 0 40px rgba(255, 42, 109, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(5, 217, 232, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
-  }
-}
-
-.pulse-glow {
-  animation: pulseGlow 4s infinite;
-}
-
-/* Skill bar styles */
+/* Skill bar styles with gradients */
 .skill-icon {
-  color: var(--neon-pink);
-  filter: drop-shadow(0 0 5px rgba(255, 42, 109, 0.5));
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(5, 217, 232, 0.5));
   transition: all 0.3s ease;
 }
 
 .skill-bar {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
   position: relative;
 }
@@ -587,10 +551,10 @@ body {
   left: 0;
   height: 100%;
   width: var(--skill-level);
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
-  border-radius: 3px;
-  box-shadow: 0 0 8px rgba(5, 217, 232, 0.5);
-  animation: progressAnimation 1.5s ease-out forwards;
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.5);
+  animation: progressAnimation 2s ease-out forwards;
   transform-origin: left;
 }
 
@@ -616,5 +580,52 @@ body {
 
 .skill-category:hover .skill-icon {
   transform: scale(1.1);
-  filter: drop-shadow(0 0 8px rgba(255, 42, 109, 0.8));
+  filter: drop-shadow(0 0 12px rgba(255, 78, 200, 0.8));
+}
+
+/* Section headings with gradients */
+.section-title {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Loading screen gradients */
+.loading-gradient {
+  background: var(--gradient-primary);
+}
+
+/* Project card gradients */
+.project-card {
+  background: linear-gradient(135deg, rgba(5, 8, 22, 0.8) 0%, rgba(10, 25, 47, 0.6) 100%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-border);
+  border-radius: 15px;
+  padding: 1px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+  animation: gradientShift 2s ease infinite;
 }

@@ -21,15 +21,14 @@ const ProjectCard = ({ title, date, description, technologies, githubUrl, imageS
 
   return (
     <motion.div
-      className="project-card bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden border border-gray-700 transition-all duration-500"
+      className="project-card transition-all duration-500"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       whileHover={{
         y: -10,
-        boxShadow: "0 0 25px rgba(5, 217, 232, 0.4)",
-        borderColor: "rgba(5, 217, 232, 0.5)",
+        boxShadow: "0 0 35px rgba(5, 217, 232, 0.4), 0 0 70px rgba(255, 78, 200, 0.2)",
       }}
       animate={{
         y: [0, -5, 0],
@@ -61,7 +60,10 @@ const ProjectCard = ({ title, date, description, technologies, githubUrl, imageS
           ></div>
 
           <motion.div
-            className="absolute bottom-4 right-4 bg-[#05d9e8] rounded-full p-2 text-white"
+            className="absolute bottom-4 right-4 rounded-full p-2 text-white"
+            style={{
+              background: "linear-gradient(135deg, #05d9e8 0%, #ff4ec8 100%)",
+            }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{
               opacity: isHovered ? 1 : 0,
@@ -77,7 +79,7 @@ const ProjectCard = ({ title, date, description, technologies, githubUrl, imageS
       <div className="p-6">
         <div className="flex justify-between items-start mb-3">
           <motion.h3
-            className="text-xl font-bold text-[#0ef]"
+            className="text-xl font-bold gradient-text-primary"
             animate={{
               textShadow: isHovered ? "0 0 8px rgba(5, 217, 232, 0.7)" : "0 0 0px rgba(5, 217, 232, 0)",
             }}
@@ -85,16 +87,24 @@ const ProjectCard = ({ title, date, description, technologies, githubUrl, imageS
           >
             <Link href={`/projects/${slug}`}>{title}</Link>
           </motion.h3>
-          <span className="text-sm text-gray-400 bg-gray-800 px-2 py-1 rounded-full">{date}</span>
+          <span className="text-sm gradient-text bg-gray-800 px-2 py-1 rounded-full">{date}</span>
         </div>
 
         <div className="mb-4 text-gray-300 project-description">{description}</div>
 
         <div className="flex items-center mb-5 text-sm text-gray-400">
-          <FaLayerGroup className="mr-2 text-[#ff4ec8]" />
+          <FaLayerGroup className="mr-2 gradient-icon" />
           <div className="tech-tags flex flex-wrap gap-2">
             {technologies.split(", ").map((tech, index) => (
-              <span key={index} className="bg-gray-800 px-2 py-1 rounded-md border border-gray-700">
+              <span
+                key={index}
+                className="bg-gray-800 px-2 py-1 rounded-md border border-gray-700 hover:border-[#05d9e8] transition-colors"
+                style={{
+                  background: isHovered
+                    ? "linear-gradient(135deg, rgba(5, 217, 232, 0.1) 0%, rgba(255, 78, 200, 0.1) 100%)"
+                    : "",
+                }}
+              >
                 {tech}
               </span>
             ))}
@@ -105,14 +115,15 @@ const ProjectCard = ({ title, date, description, technologies, githubUrl, imageS
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="github-button flex items-center justify-center w-full py-2 px-4 bg-gray-800 rounded-md border border-gray-700 text-white transition-all duration-300"
+          className="github-button flex items-center justify-center w-full py-2 px-4 rounded-md border border-gray-700 text-white transition-all duration-300"
+          style={{
+            background: isHovered
+              ? "linear-gradient(135deg, rgba(5, 217, 232, 0.2) 0%, rgba(255, 78, 200, 0.2) 100%)"
+              : "rgba(5, 8, 22, 0.8)",
+          }}
           whileHover={{
             scale: 1.03,
-            boxShadow: "0 0 15px rgba(5, 217, 232, 0.5)",
-            borderColor: "#0ef",
-          }}
-          animate={{
-            boxShadow: isHovered ? "0 0 10px rgba(5, 217, 232, 0.3)" : "none",
+            boxShadow: "0 0 20px rgba(5, 217, 232, 0.5), 0 0 40px rgba(255, 78, 200, 0.3)",
           }}
         >
           <FaGithub className="mr-2" />

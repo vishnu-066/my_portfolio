@@ -48,8 +48,8 @@ const ContactUs = () => {
         viewport={{ once: true }}
       >
         <div className="flex items-center mb-6">
-          <FaComments className="text-3xl text-[#05d9e8] mr-3" />
-          <h3 className="text-2xl font-bold text-[#05d9e8]">Get in Touch</h3>
+          <FaComments className="text-3xl gradient-icon mr-3" />
+          <h3 className="text-2xl font-bold gradient-text-primary">Get in Touch</h3>
         </div>
 
         <p className="text-gray-300 mb-8">
@@ -59,25 +59,25 @@ const ContactUs = () => {
 
         <div className="space-y-6">
           <div className="flex items-center">
-            <FaMapMarkerAlt className="text-[#ff4ec8] text-xl mr-4" />
+            <FaMapMarkerAlt className="text-xl gradient-icon mr-4" />
             <div>
-              <h4 className="text-lg font-semibold">Location</h4>
+              <h4 className="text-lg font-semibold gradient-text">Location</h4>
               <p className="text-gray-300">Kadapa, Andhra Pradesh</p>
             </div>
           </div>
 
           <div className="flex items-center">
-            <FaPhone className="text-[#ff4ec8] text-xl mr-4" />
+            <FaPhone className="text-xl gradient-icon mr-4" />
             <div>
-              <h4 className="text-lg font-semibold">Phone</h4>
+              <h4 className="text-lg font-semibold gradient-text">Phone</h4>
               <p className="text-gray-300">9110752349</p>
             </div>
           </div>
 
           <div className="flex items-center">
-            <FaEnvelope className="text-[#ff4ec8] text-xl mr-4" />
+            <FaEnvelope className="text-xl gradient-icon mr-4" />
             <div>
-              <h4 className="text-lg font-semibold">Email</h4>
+              <h4 className="text-lg font-semibold gradient-text">Email</h4>
               <p className="text-gray-300">somulavishnu6@gmail.com</p>
             </div>
           </div>
@@ -92,11 +92,11 @@ const ContactUs = () => {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <h3 className="text-2xl font-bold text-[#05d9e8] mb-6">Contact Me</h3>
+        <h3 className="text-2xl font-bold gradient-text-primary mb-6">Contact Me</h3>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium gradient-text mb-1">
               Your Name
             </label>
             <input
@@ -112,7 +112,7 @@ const ContactUs = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium gradient-text mb-1">
               Your Email
             </label>
             <input
@@ -128,7 +128,7 @@ const ContactUs = () => {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="message" className="block text-sm font-medium gradient-text mb-1">
               Your Message
             </label>
             <textarea
@@ -150,7 +150,7 @@ const ContactUs = () => {
               disabled={isSubmitting}
               whileHover={{
                 y: -3,
-                boxShadow: "0 0 15px rgba(5, 217, 232, 0.7)",
+                boxShadow: "0 0 25px rgba(5, 217, 232, 0.7), 0 0 50px rgba(255, 78, 200, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
             >
@@ -166,7 +166,7 @@ const ContactUs = () => {
 
           {submitted && (
             <motion.div
-              className="text-center text-green-400 mt-4 p-3 bg-green-900 bg-opacity-20 rounded-md"
+              className="text-center gradient-text mt-4 p-3 bg-green-900 bg-opacity-20 rounded-md border border-green-500"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}

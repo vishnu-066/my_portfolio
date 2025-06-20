@@ -2,6 +2,7 @@ import "./globals.css"
 import "./components/project-effects.css"
 import "./components/skill-charts.css"
 import "./components/project-detail.css"
+import "./components/magical-buttons.css"
 import { Inter, Dancing_Script } from "next/font/google"
 import type React from "react"
 

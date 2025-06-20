@@ -164,12 +164,12 @@ const HeroSection = () => {
                 href="https://linkedin.com/in/vishnuvardhan06/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cosmic-social-btn"
+                className="cosmic-social-btn-new"
                 variants={socialVariants}
                 custom={0}
                 whileHover={{
                   scale: 1.1,
-                  boxShadow: "0 0 15px rgba(5, 217, 232, 0.8)",
+                  boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
                 }}
                 aria-label="LinkedIn"
               >
@@ -180,12 +180,12 @@ const HeroSection = () => {
                 href="https://github.com/vishnu-066?tab=repositories"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cosmic-social-btn"
+                className="cosmic-social-btn-new"
                 variants={socialVariants}
                 custom={1}
                 whileHover={{
                   scale: 1.1,
-                  boxShadow: "0 0 15px rgba(255, 42, 109, 0.8)",
+                  boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
                 }}
                 aria-label="GitHub"
               >
@@ -196,12 +196,12 @@ const HeroSection = () => {
                 href="https://leetcode.com/u/Vishnu_vardhan_2004/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cosmic-social-btn"
+                className="cosmic-social-btn-new"
                 variants={socialVariants}
                 custom={2}
                 whileHover={{
                   scale: 1.1,
-                  boxShadow: "0 0 15px rgba(157, 78, 221, 0.8)",
+                  boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
                 }}
                 aria-label="LeetCode"
               >
@@ -215,7 +215,7 @@ const HeroSection = () => {
                 href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cosmic-resume-btn"
+                className="cosmic-resume-btn-new"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 10px 25px -5px rgba(5, 217, 232, 0.6), 0 5px 10px rgba(255, 42, 109, 0.4)",
@@ -233,7 +233,7 @@ const HeroSection = () => {
         {/* Right column - Profile image */}
         <motion.div className="order-1 lg:order-2 flex justify-center lg:justify-end" variants={profileVariants}>
           <div className="relative">
-            <CosmicProfile imageSrc="/portfolio-pic.jpg" size={320} />
+            <CosmicProfile imageSrc="/new-portfolio-pic.jpg" size={320} />
           </div>
         </motion.div>
       </motion.div>

@@ -63,6 +63,15 @@ const Navigation = () => {
     }
   }
 
+  // Define gradient colors for each section
+  const sectionColors = {
+    home: { from: "#05d9e8", to: "#ff4ec8" },
+    skills: { from: "#05d9e8", to: "#9d4edd" },
+    projects: { from: "#ff4ec8", to: "#05d9e8" },
+    certifications: { from: "#9d4edd", to: "#05d9e8" },
+    education: { from: "#05d9e8", to: "#ff4ec8" },
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 w-full px-[10%] py-5 flex justify-between items-center z-50 transition-all duration-500 ${
@@ -74,21 +83,37 @@ const Navigation = () => {
       </Link>
 
       <nav className="navbar hidden md:flex items-center">
-        {["home", "skills", "projects", "certifications", "education"].map((section) => (
-          <motion.button
-            key={section}
-            onClick={() => scrollToSection(section)}
-            className={`text-lg font-medium ml-8 transition-colors duration-300 ${
-              activeSection === section ? "text-[#05d9e8] neon-text" : "text-white"
-            }`}
-            whileHover={{
-              color: "#05d9e8",
-              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
-            }}
-          >
-            {section.charAt(0).toUpperCase() + section.slice(1)}
-          </motion.button>
-        ))}
+        {["home", "skills", "projects", "certifications", "education"].map((section) => {
+          const isActive = activeSection === section
+          const colors = sectionColors[section as keyof typeof sectionColors] || { from: "#05d9e8", to: "#ff4ec8" }
+
+          return (
+            <motion.button
+              key={section}
+              onClick={() => scrollToSection(section)}
+              className={`magical-btn ml-6 ${isActive ? "active" : ""}`}
+              style={{
+                background: isActive
+                  ? `linear-gradient(45deg, rgba(${colors.from
+                      .replace("#", "")
+                      .match(/.{1,2}/g)
+                      ?.map((val) => Number.parseInt(val, 16))
+                      .join(", ")}, 0.3), rgba(${colors.to
+                      .replace("#", "")
+                      .match(/.{1,2}/g)
+                      ?.map((val) => Number.parseInt(val, 16))
+                      .join(", ")}, 0.3))`
+                  : "",
+              }}
+              whileHover={{
+                boxShadow: `0 0 15px ${colors.from}80`,
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </motion.button>
+          )
+        })}
 
         <Dropdown title="More" items={dropdownItems} />
 
@@ -97,11 +122,10 @@ const Navigation = () => {
             href="https://linkedin.com/in/vishnuvardhan06/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white p-2"
+            className="cosmic-social-btn-new"
             whileHover={{
               scale: 1.1,
-              color: "#05d9e8",
-              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+              boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
             }}
             aria-label="LinkedIn"
           >
@@ -112,11 +136,10 @@ const Navigation = () => {
             href="https://github.com/vishnu-066?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white p-2"
+            className="cosmic-social-btn-new"
             whileHover={{
               scale: 1.1,
-              color: "#05d9e8",
-              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+              boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
             }}
             aria-label="GitHub"
           >
@@ -127,11 +150,10 @@ const Navigation = () => {
             href="https://leetcode.com/u/Vishnu_vardhan_2004/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white p-2"
+            className="cosmic-social-btn-new"
             whileHover={{
               scale: 1.1,
-              color: "#05d9e8",
-              textShadow: "0 0 8px rgba(5, 217, 232, 0.8), 0 0 12px rgba(5, 217, 232, 0.5)",
+              boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
             }}
             aria-label="LeetCode"
           >
@@ -176,33 +198,46 @@ const Navigation = () => {
               "achievements",
               "social-work",
               "contact-us",
-            ].map((section) => (
-              <motion.button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`block w-full text-left px-3 py-2 rounded-md ${
-                  activeSection === section ? "text-[#05d9e8] neon-text" : "text-white"
-                }`}
-                whileHover={{
-                  backgroundColor: "rgba(5, 217, 232, 0.1)",
-                  color: "#05d9e8",
-                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
-                }}
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, " ")}
-              </motion.button>
-            ))}
+            ].map((section) => {
+              const isActive = activeSection === section
+              const colors = sectionColors[section as keyof typeof sectionColors] || { from: "#05d9e8", to: "#ff4ec8" }
+
+              return (
+                <motion.button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  className={`smoke-btn block w-full text-left mb-2 ${isActive ? "active" : ""}`}
+                  style={{
+                    background: isActive
+                      ? `linear-gradient(45deg, rgba(${colors.from
+                          .replace("#", "")
+                          .match(/.{1,2}/g)
+                          ?.map((val) => Number.parseInt(val, 16))
+                          .join(", ")}, 0.3), rgba(${colors.to
+                          .replace("#", "")
+                          .match(/.{1,2}/g)
+                          ?.map((val) => Number.parseInt(val, 16))
+                          .join(", ")}, 0.3))`
+                      : "",
+                  }}
+                  whileHover={{
+                    boxShadow: `0 0 15px ${colors.from}80`,
+                  }}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, " ")}
+                </motion.button>
+              )
+            })}
 
             <div className="flex justify-center space-x-6 mt-4 px-3 py-2">
               <motion.a
                 href="https://linkedin.com/in/vishnuvardhan06/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white"
+                className="cosmic-social-btn-new"
                 whileHover={{
                   scale: 1.1,
-                  color: "#05d9e8",
-                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                  boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
                 }}
                 aria-label="LinkedIn"
               >
@@ -213,11 +248,10 @@ const Navigation = () => {
                 href="https://github.com/vishnu-066?tab=repositories"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white"
+                className="cosmic-social-btn-new"
                 whileHover={{
                   scale: 1.1,
-                  color: "#05d9e8",
-                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                  boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
                 }}
                 aria-label="GitHub"
               >
@@ -228,11 +262,10 @@ const Navigation = () => {
                 href="https://leetcode.com/u/Vishnu_vardhan_2004/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white"
+                className="cosmic-social-btn-new"
                 whileHover={{
                   scale: 1.1,
-                  color: "#05d9e8",
-                  textShadow: "0 0 8px rgba(5, 217, 232, 0.8)",
+                  boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
                 }}
                 aria-label="LeetCode"
               >

@@ -1,12 +1,19 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { getProjectBySlug, getRelatedProjects } from "@/app/lib/projects"
+import { getProjectBySlug, getRelatedProjects, getAllProjects } from "@/app/lib/projects"
 import ProjectDetailHeader from "@/app/components/ProjectDetailHeader"
 import ProjectTechnologies from "@/app/components/ProjectTechnologies"
 import ProjectGallery from "@/app/components/ProjectGallery"
 import RelatedProjects from "@/app/components/RelatedProjects"
 import MobileDotMenu from "@/app/components/MobileDotMenu"
+
+export async function generateStaticParams() {
+  const allProjects = getAllProjects()
+  return allProjects.map((project) => ({
+    slug: project.slug,
+  }))
+}
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }> | { slug: string }

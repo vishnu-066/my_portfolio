@@ -46,6 +46,8 @@ const HeroSection = () => {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [drawerOpen])
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+
   return (
     <section
       id="home"
@@ -54,7 +56,7 @@ const HeroSection = () => {
     >
       {/* Layer 0 (default): Full-bleed background image */}
       <img
-        src="/vishnu-hero-bg.png"
+        src={`${basePath}/vishnu-hero-bg.png`}
         alt=""
         className="anim-fade-in absolute inset-0 h-full w-full object-cover"
       />
@@ -82,7 +84,7 @@ const HeroSection = () => {
 
       {/* Layer z-20: Front portrait cutout overlay (above marquee, pointer-events-none) */}
       <img
-        src="/vishnu-cutout.png"
+        src={`${basePath}/vishnu-cutout.png`}
         alt="Portrait"
         className="anim-rise-in pointer-events-none absolute inset-0 z-20 h-full w-full object-cover"
         style={{ animationDelay: "300ms" }}

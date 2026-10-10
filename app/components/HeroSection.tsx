@@ -1,242 +1,277 @@
 "use client"
 
-import { useRef } from "react"
-import { motion } from "framer-motion"
-import { FaLinkedin, FaGithub, FaFileAlt } from "react-icons/fa"
-import LeetCodeIcon from "./LeetCodeIcon"
-import CosmicProfile from "./CosmicProfile"
+import { useState, useEffect } from "react"
+import { X } from "lucide-react"
+
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Contact", href: "#contact-us" },
+]
+
+const socialLinks = [
+  { label: "LinkedIn", href: "https://linkedin.com/in/vishnuvardhan06/", external: true },
+  { label: "GitHub", href: "https://github.com/vishnu-066?tab=repositories", external: true },
+  { label: "LeetCode", href: "https://leetcode.com/u/Vishnu_vardhan_2004/", external: true },
+  {
+    label: "Resume",
+    href: "https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link",
+    external: true,
+  },
+]
 
 const HeroSection = () => {
-  // Refs for scroll animations
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  }
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [drawerOpen])
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  }
-
-  const socialVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: (i: number) => ({
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        delay: 0.8 + i * 0.1,
-      },
-    }),
-  }
-
-  const profileVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 50,
-        delay: 0.5,
-      },
-    },
-  }
-
-  // Text glow animation
-  const textGlowVariants = {
-    initial: { textShadow: "0 0 0px rgba(5, 217, 232, 0)" },
-    animate: {
-      textShadow: [
-        "0 0 4px rgba(5, 217, 232, 0.5)",
-        "0 0 8px rgba(5, 217, 232, 0.8)",
-        "0 0 15px rgba(5, 217, 232, 0.6)",
-        "0 0 4px rgba(5, 217, 232, 0.5)",
-      ],
-      transition: {
-        duration: 3,
-        repeat: Number.POSITIVE_INFINITY,
-        repeatType: "reverse",
-      },
-    },
-  }
-
-  const nameGlowVariants = {
-    initial: {
-      textShadow: "0 0 0px rgba(255, 42, 109, 0)",
-      color: "#fff",
-    },
-    animate: {
-      textShadow: [
-        "0 0 5px rgba(255, 42, 109, 0.5)",
-        "0 0 10px rgba(255, 42, 109, 0.7)",
-        "0 0 20px rgba(255, 42, 109, 0.5)",
-        "0 0 5px rgba(255, 42, 109, 0.5)",
-      ],
-      color: ["#fff", "#ff2a6d", "#ff4ec8", "#fff"],
-      transition: {
-        duration: 5,
-        repeat: Number.POSITIVE_INFINITY,
-        repeatType: "reverse",
-      },
-    },
-  }
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && drawerOpen) {
+        setDrawerOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [drawerOpen])
 
   return (
     <section
-      ref={sectionRef}
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden py-20 px-6 md:px-10 lg:px-[10%]"
+      aria-label="Hero"
+      className="relative h-[100dvh] w-full overflow-hidden bg-black font-hn text-cream"
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#050816] via-[#0a192f] to-[#050816] z-[-2]"></div>
+      {/* Layer 0 (default): Full-bleed background image */}
+      <img
+        src="/vishnu-hero-bg.png"
+        alt=""
+        className="anim-fade-in absolute inset-0 h-full w-full object-cover"
+      />
 
-      {/* Animated background elements */}
-      <div className="absolute inset-0 z-[-1]">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-[#ff2a6d] opacity-5 blur-[100px]"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full bg-[#05d9e8] opacity-5 blur-[120px]"></div>
-        <div className="absolute top-2/3 left-1/2 w-72 h-72 rounded-full bg-[#9d4edd] opacity-5 blur-[100px]"></div>
+      {/* Layer z-10: Giant scrolling marquee name */}
+      <div
+        className="anim-fade-up absolute inset-x-0 top-[16vh] sm:top-[14vh] z-10 overflow-hidden"
+        style={{ animationDelay: "500ms" }}
+      >
+        <h1 className="sr-only">Somula Vishnuvardhan Reddy (Vishnu — Vardhan)</h1>
+        <div
+          className="marquee flex w-max whitespace-nowrap font-hn text-[16vh] sm:text-[26vh] leading-none text-cream"
+          aria-hidden="true"
+        >
+          <span className="pr-[6vw]">Vishnu &mdash; Vardhan&nbsp;</span>
+          <span className="pr-[6vw]">Vishnu &mdash; Vardhan&nbsp;</span>
+        </div>
       </div>
 
-      {/* Grid container */}
-      <motion.div
-        className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={containerVariants}
+      {/* Layer z-10: Horizontal cream rule above footer */}
+      <div
+        className="anim-line absolute inset-x-6 sm:inset-x-10 bottom-[5.5rem] sm:bottom-28 z-10 h-0.5 bg-cream origin-left"
+        style={{ animationDelay: "1200ms" }}
+      />
+
+      {/* Layer z-20: Front portrait cutout overlay (above marquee, pointer-events-none) */}
+      <img
+        src="/vishnu-cutout.png"
+        alt="Portrait"
+        className="anim-rise-in pointer-events-none absolute inset-0 z-20 h-full w-full object-cover"
+        style={{ animationDelay: "300ms" }}
+      />
+
+      {/* Layer z-30: Editorial Header */}
+      <header className="absolute inset-x-0 top-0 z-30 flex items-start justify-between px-6 pt-6 sm:px-10 sm:pt-8">
+        {/* Left: Brand */}
+        <a
+          href="#home"
+          className="anim-fade-up font-hn text-lg tracking-wide text-cream"
+          style={{ animationDelay: "800ms" }}
+        >
+          Vishnu
+        </a>
+
+        {/* Right cluster (desktop sm: and up) */}
+        <div className="hidden sm:flex items-start gap-16 lg:gap-24">
+          {/* Year */}
+          <span
+            className="anim-fade-up text-sm text-cream"
+            style={{ animationDelay: "900ms" }}
+          >
+            2025
+          </span>
+
+          {/* Nav column */}
+          <nav className="flex flex-col gap-0.5 text-sm" aria-label="Hero Navigation">
+            {navLinks.map((item, i) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="anim-fade-up text-cream transition-opacity duration-300 hover:opacity-60"
+                style={{ animationDelay: `${1000 + i * 80}ms` }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Social column */}
+          <div className="flex flex-col gap-0.5 text-sm">
+            {socialLinks.map((item, i) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                className="anim-fade-up text-cream transition-opacity duration-300 hover:opacity-60"
+                style={{ animationDelay: `${1150 + i * 80}ms` }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* Layer z-50: Mobile-only Futuristic Dot Menu Button */}
+      <button
+        type="button"
+        aria-label={drawerOpen ? "Close menu" : "Open menu"}
+        aria-expanded={drawerOpen}
+        onClick={() => setDrawerOpen((prev) => !prev)}
+        className="anim-fade-up absolute right-6 top-5 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-cream/30 bg-[#141414]/90 backdrop-blur-xl text-cream shadow-[0_4px_20px_rgba(0,0,0,0.6)] active:scale-90 transition-all duration-300 sm:hidden group"
+        style={{ animationDelay: "900ms" }}
       >
-        {/* Left column - Text content */}
-        <div className="order-2 lg:order-1">
-          <motion.div className="space-y-6" variants={containerVariants}>
-            <motion.p
-              className="text-xl md:text-2xl font-medium text-[#05d9e8]"
-              variants={itemVariants}
-              custom={1}
-              initial="initial"
-              animate="animate"
-              variants={textGlowVariants}
-            >
-              Hello, I'm
-            </motion.p>
+        {drawerOpen ? (
+          <X size={20} strokeWidth={1.5} className="text-cream" />
+        ) : (
+          <div className="relative flex items-center justify-center">
+            {/* Core Glowing Dot */}
+            <span className="w-2.5 h-2.5 rounded-full bg-cream shadow-[0_0_10px_#efeee9] group-hover:scale-125 transition-transform" />
+            {/* Orbital Micro-Dots */}
+            <span className="absolute -top-2 -right-2 w-1 h-1 rounded-full bg-cream/70" />
+            <span className="absolute -bottom-1.5 -left-1.5 w-1 h-1 rounded-full bg-cream/50" />
+          </div>
+        )}
+      </button>
 
-            <motion.h1
-              className="text-5xl md:text-6xl lg:text-7xl font-bold"
-              variants={itemVariants}
-              custom={2}
-              initial="initial"
-              animate="animate"
-              variants={nameGlowVariants}
-            >
-              Vishnuvardhan
-            </motion.h1>
-
-            <motion.h2 className="text-2xl md:text-3xl font-medium text-[#ff4ec8]" variants={itemVariants} custom={3}>
-              Aspiring Data Scientist
-            </motion.h2>
-
-            <motion.div className="space-y-3 mt-4" variants={itemVariants} custom={4}>
-              <p className="handwriting-text">"Passionate about transforming data into meaningful insights."</p>
-              <p className="handwriting-text">"Creating impactful solutions through data science and analytics."</p>
-            </motion.div>
-
-            {/* Social media links */}
-            <motion.div className="flex space-x-5 pt-4" variants={containerVariants}>
-              <motion.a
-                href="https://linkedin.com/in/vishnuvardhan06/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                variants={socialVariants}
-                custom={0}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
-                }}
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin size={22} />
-              </motion.a>
-
-              <motion.a
-                href="https://github.com/vishnu-066?tab=repositories"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                variants={socialVariants}
-                custom={1}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
-                }}
-                aria-label="GitHub"
-              >
-                <FaGithub size={22} />
-              </motion.a>
-
-              <motion.a
-                href="https://leetcode.com/u/Vishnu_vardhan_2004/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                variants={socialVariants}
-                custom={2}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
-                }}
-                aria-label="LeetCode"
-              >
-                <LeetCodeIcon size={22} />
-              </motion.a>
-            </motion.div>
-
-            {/* Resume Button */}
-            <motion.div variants={itemVariants} custom={5} className="mt-6">
-              <motion.a
-                href="https://drive.google.com/file/d/1ggOPIq_zLPBrpEPNuoIiTS1tx0am1qX3/view?usp=drive_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-resume-btn-new"
-                whileHover={{
-                  y: -5,
-                  boxShadow: "0 10px 25px -5px rgba(5, 217, 232, 0.6), 0 5px 10px rgba(255, 42, 109, 0.4)",
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.5 }}
-              >
-                <FaFileAlt className="mr-2" /> Download Resume
-              </motion.a>
-            </motion.div>
-          </motion.div>
+      {/* Layer z-30 (mobile) / sm:z-10 (desktop): Bottom Footer Copy */}
+      <div className="absolute inset-x-0 bottom-0 z-30 sm:z-10 flex items-end justify-between px-6 pb-5 sm:px-10 sm:pb-8 text-xs sm:text-sm leading-relaxed font-hn text-cream">
+        <div
+          className="anim-fade-up"
+          style={{ animationDelay: "1400ms" }}
+        >
+          <div>AI &amp; Data Scientist</div>
+          <div>Software Engineer</div>
+          <div>Algorithm Crafter</div>
         </div>
 
-        {/* Right column - Profile image */}
-        <motion.div className="order-1 lg:order-2 flex justify-center lg:justify-end" variants={profileVariants}>
-          <div className="relative">
-            <CosmicProfile imageSrc="/new-portfolio-pic.jpg" size={320} />
+        <div
+          className="anim-fade-up text-right"
+          style={{ animationDelay: "1550ms" }}
+        >
+          <div>B.Tech CSE &mdash; LPU</div>
+          <div>Somula Vishnuvardhan Reddy</div>
+        </div>
+      </div>
+
+      {/* Layer z-40: Mobile Drawer (sm:hidden) */}
+      <div
+        className={`fixed inset-0 z-40 sm:hidden transition-opacity duration-500 ${
+          drawerOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          onClick={() => setDrawerOpen(false)}
+        />
+
+        {/* Slide-in Panel */}
+        <div
+          className={`absolute right-0 top-0 h-full w-[80%] max-w-sm bg-[#141414] px-8 py-10 flex flex-col justify-between transition-transform duration-[600ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] ${
+            drawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Close Button (Lucide X, size 26, strokeWidth 1.5) */}
+          <button
+            type="button"
+            aria-label="Close drawer"
+            onClick={() => setDrawerOpen(false)}
+            className={`absolute right-6 top-6 text-cream transition-all duration-300 ${
+              drawerOpen ? "rotate-0 opacity-100 delay-300" : "rotate-90 opacity-0"
+            }`}
+          >
+            <X size={26} strokeWidth={1.5} />
+          </button>
+
+          {/* Site Index Section */}
+          <div className="mt-12">
+            <div
+              className={`text-xs uppercase tracking-[0.2em] text-cream/50 mb-6 transition-all duration-500 ${
+                drawerOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              }`}
+              style={{ transitionDelay: drawerOpen ? "250ms" : "0ms" }}
+            >
+              Site Index
+            </div>
+
+            <nav className="flex flex-col gap-3">
+              {navLinks.map((item, i) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setDrawerOpen(false)}
+                  className={`text-4xl font-hn text-cream transition-all duration-500 hover:opacity-60 ${
+                    drawerOpen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+                  }`}
+                  style={{ transitionDelay: drawerOpen ? `${300 + i * 80}ms` : "0ms" }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
           </div>
-        </motion.div>
-      </motion.div>
+
+          {/* Find Me Section */}
+          <div>
+            <div
+              className={`text-xs uppercase tracking-[0.2em] text-cream/50 mb-4 transition-all duration-500 ${
+                drawerOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              }`}
+              style={{ transitionDelay: drawerOpen ? "500ms" : "0ms" }}
+            >
+              Find Me
+            </div>
+
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {socialLinks.map((item, i) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  onClick={() => setDrawerOpen(false)}
+                  className={`text-cream transition-all duration-500 hover:opacity-60 ${
+                    drawerOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                  }`}
+                  style={{ transitionDelay: drawerOpen ? `${550 + i * 60}ms` : "0ms" }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

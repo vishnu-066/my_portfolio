@@ -1,6 +1,3 @@
-import { FaPython, FaDatabase, FaChartLine, FaCode } from "react-icons/fa"
-import { SiCplusplus, SiR, SiJavascript, SiHtml5, SiCss3 } from "react-icons/si"
-
 export interface ProjectImage {
   src: string
   alt: string
@@ -9,7 +6,6 @@ export interface ProjectImage {
 
 export interface ProjectTechnology {
   name: string
-  icon: any
   color?: string
 }
 
@@ -51,11 +47,11 @@ export const projects: Project[] = [
       "Educational explanations for each operation",
     ],
     technologies: [
-      { name: "C++", icon: SiCplusplus, color: "#00599C" },
-      { name: "WebAssembly", icon: FaCode, color: "#654FF0" },
-      { name: "HTML", icon: SiHtml5, color: "#E34F26" },
-      { name: "CSS", icon: SiCss3, color: "#1572B6" },
-      { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+      { name: "C++", color: "#00599C" },
+      { name: "WebAssembly", color: "#654FF0" },
+      { name: "HTML", color: "#E34F26" },
+      { name: "CSS", color: "#1572B6" },
+      { name: "JavaScript", color: "#F7DF1E" },
     ],
     githubUrl: "https://github.com/vishnu-066/cipher_schools_project",
     imageSrc: "/images/bst-visualization.png",
@@ -119,10 +115,10 @@ export const projects: Project[] = [
       "Detailed statistical analysis of prediction factors",
     ],
     technologies: [
-      { name: "R", icon: SiR, color: "#276DC3" },
-      { name: "ggplot2", icon: FaChartLine, color: "#E7553C" },
-      { name: "caret", icon: SiR, color: "#276DC3" },
-      { name: "dplyr", icon: SiR, color: "#276DC3" },
+      { name: "R", color: "#276DC3" },
+      { name: "ggplot2", color: "#E7553C" },
+      { name: "caret", color: "#276DC3" },
+      { name: "dplyr", color: "#276DC3" },
     ],
     githubUrl: "https://github.com/vishnu-066/Diabetes-prediction-Model",
     imageSrc: "/images/diabetes-prediction.png",
@@ -182,10 +178,10 @@ export const projects: Project[] = [
       "Predictive models for future population trends",
     ],
     technologies: [
-      { name: "Python", icon: FaPython, color: "#3776AB" },
-      { name: "Pandas", icon: FaDatabase, color: "#150458" },
-      { name: "Matplotlib", icon: FaChartLine, color: "#11557C" },
-      { name: "Seaborn", icon: FaChartLine, color: "#3776AB" },
+      { name: "Python", color: "#3776AB" },
+      { name: "Pandas", color: "#150458" },
+      { name: "Matplotlib", color: "#11557C" },
+      { name: "Seaborn", color: "#3776AB" },
     ],
     githubUrl: "https://github.com/vishnu-066/population-of-india-_analysis",
     imageSrc: "/images/population-analysis.png",

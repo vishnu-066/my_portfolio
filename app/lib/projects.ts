@@ -9,9 +9,19 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getRelatedProjects(currentProject: Project, limit = 2): Project[] {
-  return projects
-    .filter((project) => project.id !== currentProject.id && project.category === currentProject.category)
-    .slice(0, limit)
+  const sameCategory = projects.filter(
+    (project) => project.id !== currentProject.id && project.category === currentProject.category,
+  )
+
+  if (sameCategory.length >= limit) {
+    return sameCategory.slice(0, limit)
+  }
+
+  const others = projects.filter(
+    (project) => project.id !== currentProject.id && project.category !== currentProject.category,
+  )
+
+  return [...sameCategory, ...others].slice(0, limit)
 }
 
 export function getProjectCategories() {

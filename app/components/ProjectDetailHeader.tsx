@@ -1,80 +1,133 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Image from "next/image"
 import Link from "next/link"
-import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from "react-icons/fa"
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react"
 import type { Project } from "../data/projects"
 
 interface ProjectDetailHeaderProps {
   project: Project
 }
 
-const ProjectDetailHeader = ({ project }: ProjectDetailHeaderProps) => {
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+}
+
+export default function ProjectDetailHeader({ project }: ProjectDetailHeaderProps) {
   return (
-    <div className="relative">
-      <div className="absolute top-0 left-0 z-10 p-4">
-        <Link
-          href="/#projects"
-          className="flex items-center gap-2 text-white bg-gray-900 bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-full transition-all hover:bg-opacity-70"
+    <header className="relative w-full bg-[#0a0a0a] text-cream border-b border-white/10 pt-6 pb-16 px-6 md:px-16 font-hn">
+      <div className="max-w-[1440px] mx-auto">
+        {/* SUB-NAV BAR STYLE */}
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={fadeUp}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="flex flex-wrap justify-between items-start gap-6 pb-12 border-b border-white/10 text-[10px] md:text-[11px] font-mono tracking-[0.2em] uppercase text-cream/70"
         >
-          <FaArrowLeft /> Back to Projects
-        </Link>
-      </div>
+          {/* Left column */}
+          <div className="w-auto md:w-[15%] leading-relaxed">
+            <Link
+              href="/#projects"
+              className="inline-flex items-center gap-2 font-semibold text-cream hover:opacity-70 transition-opacity active:scale-95"
+            >
+              <ArrowLeft size={14} strokeWidth={1.5} />
+              <span>Back to Index</span>
+            </Link>
+            <div className="text-cream/40 mt-1">CASE STUDY // SYS</div>
+          </div>
 
-      <div className="relative h-[50vh] min-h-[400px] w-full overflow-hidden">
-        <Image
-          src={project.imageSrc || "/placeholder.svg"}
-          alt={project.title}
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(5,8,22,0.7)] to-[#050816]"></div>
+          {/* Arrow separator */}
+          <div className="hidden md:flex w-[5%] justify-center pt-1">
+            <ArrowRight size={14} strokeWidth={1} className="text-cream/30" />
+          </div>
 
-        <div className="absolute bottom-0 left-0 w-full p-8 z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{project.title}</h1>
+          {/* Center column */}
+          <div className="flex-1 md:w-[32%] text-cream/60 leading-relaxed font-mono">
+            {project.description}
+          </div>
 
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              <span className="bg-[#05d9e8] bg-opacity-20 text-[#05d9e8] px-3 py-1 rounded-full text-sm">
-                {project.date}
-              </span>
-              <span className="bg-[#ff4ec8] bg-opacity-20 text-[#ff4ec8] px-3 py-1 rounded-full text-sm capitalize">
-                {project.category.replace("-", " ")}
+          {/* Arrow separator */}
+          <div className="hidden md:flex w-[5%] justify-center pt-1">
+            <ArrowRight size={14} strokeWidth={1} className="text-cream/30" />
+          </div>
+
+          {/* Right column */}
+          <div className="hidden md:flex flex-col gap-1.5 w-[15%] text-cream/60">
+            <Link href="/#about" className="hover:text-cream transition-colors">
+              01 // About
+            </Link>
+            <Link href="/#projects" className="hover:text-cream transition-colors">
+              02 // Projects
+            </Link>
+            <Link href="/#skills" className="hover:text-cream transition-colors">
+              03 // Skills
+            </Link>
+            <Link href="/#contact-us" className="hover:text-cream transition-colors">
+              06 // Contact
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* Hero Title & Actions Grid */}
+        <div className="pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-8 space-y-6"
+          >
+            <div className="flex items-center gap-3 text-xs font-mono">
+              <span className="text-cream/50">02</span>
+              <span className="w-16 h-[1px] bg-cream/30 block" />
+              <span className="text-[10px] tracking-[0.2em] uppercase text-cream/50">
+                {project.category.replace("-", " ")} // {project.date}
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <motion.a
-                href={project.githubUrl}
+            <h1 className="text-[2.6rem] sm:text-[3.5rem] md:text-[4.6rem] font-medium tracking-tight leading-[1.02] text-cream uppercase">
+              {project.title}
+            </h1>
+          </motion.div>
+
+          {/* Right Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="lg:col-span-4 flex flex-wrap lg:justify-end gap-3"
+          >
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative overflow-hidden inline-flex items-center gap-3 bg-cream text-[#0a0a0a] px-7 py-3.5 rounded-full border border-transparent shadow-[0_4px_20px_rgba(239,238,233,0.15)] active:scale-95 transition-all duration-300"
+            >
+              <span className="absolute inset-0 bg-white -translate-x-[101%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              <span className="relative z-10 text-[12px] font-mono tracking-[0.16em] uppercase font-semibold text-[#0a0a0a]">
+                Source Repository
+              </span>
+              <ArrowUpRight
+                size={14}
+                className="relative z-10 text-[#0a0a0a] group-hover:scale-110 transition-transform"
+              />
+            </a>
+
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 bg-white/[0.03] text-[12px] font-mono tracking-[0.16em] uppercase text-cream hover:bg-cream hover:text-[#0a0a0a] active:scale-95 transition-all duration-300"
               >
-                <FaGithub /> View on GitHub
-              </motion.a>
-
-              {project.liveUrl && (
-                <motion.a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-[#05d9e8] hover:bg-opacity-80 text-white px-4 py-2 rounded-md transition-all"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FaExternalLinkAlt /> Live Demo
-                </motion.a>
-              )}
-            </div>
+                <span>Live Deployment</span>
+                <ArrowUpRight size={14} />
+              </a>
+            )}
           </motion.div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }
-
-export default ProjectDetailHeader

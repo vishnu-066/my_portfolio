@@ -3,10 +3,7 @@ import type { Config } from "tailwindcss"
 const config: Config = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -61,9 +58,14 @@ const config: Config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        fontFamily: {
-          "dancing-script": ["var(--font-dancing-script)"],
-        },
+        cream: "#efeee9",
+      },
+      fontFamily: {
+        hn: ['"Helvetica Neue ME"', "Helvetica", "Arial", "sans-serif"],
+        sans: ['"Helvetica Neue ME"', "Helvetica", "Arial", "var(--font-inter)", "sans-serif"],
+        serif: ['"Helvetica Neue ME"', "Helvetica", "Arial", "sans-serif"],
+        display: ["var(--font-space-grotesk)", "Space Grotesk", "sans-serif"],
+        mono: ["var(--font-jetbrains-mono)", "JetBrains Mono", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,282 +1,194 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { FaLinkedin, FaGithub } from "react-icons/fa"
-import Dropdown from "./Dropdown"
-import LeetCodeIcon from "./LeetCodeIcon"
+import { motion, AnimatePresence } from "framer-motion"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 
-const Navigation = () => {
+const navItems = [
+  { id: "about", label: "About" },
+  { id: "projects", label: "Projects" },
+  { id: "skills", label: "Skills" },
+  { id: "experience", label: "Experience" },
+  { id: "certifications", label: "Credentials" },
+  { id: "achievements", label: "Awards" },
+  { id: "contact-us", label: "Contact" },
+]
+
+export default function Navigation() {
   const [activeSection, setActiveSection] = useState("home")
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  const dropdownItems = [
-    { name: "Achievements", href: "#achievements" },
-    { name: "Social Work", href: "#social-work" },
-    { name: "Contact Me", href: "#contact-us" },
-  ]
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [pastHero, setPastHero] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      // Set scrolled state for navbar background change
-      if (window.scrollY > 50) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
+      const heroThreshold = typeof window !== "undefined" ? window.innerHeight * 0.8 : 600
+      const isPast = window.scrollY > heroThreshold
+      setPastHero(isPast)
+      if (!isPast) {
+        setIsMobileMenuOpen(false)
       }
 
-      // Active section detection
-      const sections = [
-        "home",
-        "skills",
-        "projects",
-        "certifications",
-        "education",
-        "achievements",
-        "social-work",
-        "contact-us",
-      ]
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
+      for (const item of navItems) {
+        const element = document.getElementById(item.id)
         if (element) {
           const rect = element.getBoundingClientRect()
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section)
+          if (rect.top <= 200 && rect.bottom >= 200) {
+            setActiveSection(item.id)
             break
           }
         }
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isMobileMenuOpen])
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
-      setMobileMenuOpen(false)
+      setActiveSection(sectionId)
+      setIsMobileMenuOpen(false)
     }
   }
 
-  // Define gradient colors for each section
-  const sectionColors = {
-    home: { from: "#05d9e8", to: "#ff4ec8" },
-    skills: { from: "#05d9e8", to: "#9d4edd" },
-    projects: { from: "#ff4ec8", to: "#05d9e8" },
-    certifications: { from: "#9d4edd", to: "#05d9e8" },
-    education: { from: "#05d9e8", to: "#ff4ec8" },
-  }
-
   return (
-    <header
-      className={`fixed top-0 left-0 w-full px-[10%] py-5 flex justify-between items-center z-50 transition-all duration-500 ${
-        scrolled ? "bg-opacity-90 backdrop-blur-sm bg-[#050816]" : "bg-transparent"
-      }`}
-    >
-      <Link href="/" className="text-2xl font-semibold text-white neon-text">
-        Portfolio
-      </Link>
-
-      <nav className="navbar hidden md:flex items-center">
-        {["home", "skills", "projects", "certifications", "education"].map((section) => {
-          const isActive = activeSection === section
-          const colors = sectionColors[section as keyof typeof sectionColors] || { from: "#05d9e8", to: "#ff4ec8" }
-
-          return (
-            <motion.button
-              key={section}
-              onClick={() => scrollToSection(section)}
-              className={`magical-btn ml-6 ${isActive ? "active" : ""}`}
-              style={{
-                background: isActive
-                  ? `linear-gradient(45deg, rgba(${colors.from
-                      .replace("#", "")
-                      .match(/.{1,2}/g)
-                      ?.map((val) => Number.parseInt(val, 16))
-                      .join(", ")}, 0.3), rgba(${colors.to
-                      .replace("#", "")
-                      .match(/.{1,2}/g)
-                      ?.map((val) => Number.parseInt(val, 16))
-                      .join(", ")}, 0.3))`
-                  : "",
-              }}
-              whileHover={{
-                boxShadow: `0 0 15px ${colors.from}80`,
-              }}
-              whileTap={{ scale: 0.95 }}
+    <>
+      {/* DESKTOP & HEADER FLOATING STRIP (Dark Editorial Theme matching Hero) */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          pastHero
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-4 pointer-events-none"
+        }`}
+        aria-hidden={!pastHero}
+      >
+        <div className="bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/10 px-6 md:px-16 py-3.5 text-cream">
+          <div className="max-w-[1440px] mx-auto flex justify-between items-center text-[10px] md:text-[11px] font-mono tracking-[0.2em] uppercase">
+            {/* Left column: Brand Logo */}
+            <button
+              type="button"
+              tabIndex={pastHero ? 0 : -1}
+              onClick={() => scrollToSection("home")}
+              className="text-left leading-tight font-semibold text-cream hover:opacity-70 transition-opacity w-auto md:w-[15%] active:scale-95"
             >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </motion.button>
-          )
-        })}
+              <span className="block font-hn text-sm font-normal">Vishnu &mdash; Vardhan</span>
+              <span className="block text-cream/40 font-mono text-[9px]">AI &bull; SOFTWARE ENG</span>
+            </button>
 
-        <Dropdown title="More" items={dropdownItems} />
+            {/* Separator */}
+            <div className="hidden lg:flex w-[4%] justify-center">
+              <ArrowRight size={13} strokeWidth={1} className="text-cream/30" />
+            </div>
 
-        <div className="flex space-x-4 ml-8">
-          <motion.a
-            href="https://linkedin.com/in/vishnuvardhan06/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cosmic-social-btn-new"
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
-            }}
-            aria-label="LinkedIn"
-          >
-            <FaLinkedin size={20} />
-          </motion.a>
+            {/* Center column: Telemetry */}
+            <div className="hidden lg:block w-[30%] text-cream/60 leading-relaxed font-mono text-[10px] tracking-[0.18em]">
+              Autonomous reasoning, statistical models &amp; high-performance code.
+            </div>
 
-          <motion.a
-            href="https://github.com/vishnu-066?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cosmic-social-btn-new"
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
-            }}
-            aria-label="GitHub"
-          >
-            <FaGithub size={20} />
-          </motion.a>
+            {/* Separator */}
+            <div className="hidden lg:flex w-[4%] justify-center">
+              <ArrowRight size={13} strokeWidth={1} className="text-cream/30" />
+            </div>
 
-          <motion.a
-            href="https://leetcode.com/u/Vishnu_vardhan_2004/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cosmic-social-btn-new"
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
-            }}
-            aria-label="LeetCode"
-          >
-            <LeetCodeIcon size={20} />
-          </motion.a>
-        </div>
-      </nav>
+            {/* Right column: Desktop Navigation Links */}
+            <nav
+              className="hidden md:flex items-center gap-5 lg:gap-7"
+              aria-label="Primary Navigation"
+            >
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    tabIndex={pastHero ? 0 : -1}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`transition-all duration-200 py-1 relative active:scale-95 ${
+                      isActive
+                        ? "text-cream font-semibold"
+                        : "text-cream/60 hover:text-cream"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-cream shadow-[0_0_8px_#efeee9]" />
+                    )}
+                  </button>
+                )
+              })}
+            </nav>
 
-      {/* Mobile menu button */}
-      <button className="md:hidden text-white focus:outline-none" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          {mobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
-      </button>
-
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <motion.div
-          className="md:hidden absolute top-full left-0 right-0 bg-[#050816] bg-opacity-95 backdrop-blur-sm"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {[
-              "home",
-              "skills",
-              "projects",
-              "certifications",
-              "education",
-              "achievements",
-              "social-work",
-              "contact-us",
-            ].map((section) => {
-              const isActive = activeSection === section
-              const colors = sectionColors[section as keyof typeof sectionColors] || { from: "#05d9e8", to: "#ff4ec8" }
-
-              return (
-                <motion.button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`smoke-btn block w-full text-left mb-2 ${isActive ? "active" : ""}`}
-                  style={{
-                    background: isActive
-                      ? `linear-gradient(45deg, rgba(${colors.from
-                          .replace("#", "")
-                          .match(/.{1,2}/g)
-                          ?.map((val) => Number.parseInt(val, 16))
-                          .join(", ")}, 0.3), rgba(${colors.to
-                          .replace("#", "")
-                          .match(/.{1,2}/g)
-                          ?.map((val) => Number.parseInt(val, 16))
-                          .join(", ")}, 0.3))`
-                      : "",
-                  }}
-                  whileHover={{
-                    boxShadow: `0 0 15px ${colors.from}80`,
-                  }}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, " ")}
-                </motion.button>
-              )
-            })}
-
-            <div className="flex justify-center space-x-6 mt-4 px-3 py-2">
-              <motion.a
-                href="https://linkedin.com/in/vishnuvardhan06/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(5, 217, 232, 0.8), 0 0 25px rgba(5, 217, 232, 0.5)",
-                }}
-                aria-label="LinkedIn"
+            {/* Mobile Header Right: Futuristic Dot Menu Trigger */}
+            <div className="md:hidden flex items-center">
+              <button
+                type="button"
+                tabIndex={pastHero ? 0 : -1}
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+                className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#181818] border border-cream/30 active:scale-90 transition-all duration-300"
               >
-                <FaLinkedin size={24} />
-              </motion.a>
-
-              <motion.a
-                href="https://github.com/vishnu-066?tab=repositories"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(255, 42, 109, 0.8), 0 0 25px rgba(255, 42, 109, 0.5)",
-                }}
-                aria-label="GitHub"
-              >
-                <FaGithub size={24} />
-              </motion.a>
-
-              <motion.a
-                href="https://leetcode.com/u/Vishnu_vardhan_2004/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cosmic-social-btn-new"
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 0 15px rgba(157, 78, 221, 0.8), 0 0 25px rgba(157, 78, 221, 0.5)",
-                }}
-                aria-label="LeetCode"
-              >
-                <LeetCodeIcon size={24} />
-              </motion.a>
+                <span className="w-2.5 h-2.5 rounded-full bg-cream shadow-[0_0_8px_#efeee9]" />
+                <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-cream/70" />
+              </button>
             </div>
           </div>
-        </motion.div>
-      )}
-    </header>
+        </div>
+
+        {/* Mobile Dropdown Panel (when opened from sticky header) */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              className="md:hidden bg-[#0c0c0c]/98 border-b border-white/10 shadow-2xl px-6 py-8 backdrop-blur-2xl"
+            >
+              <div className="text-[10px] font-mono tracking-[0.24em] text-cream/40 uppercase mb-5">
+                SECTOR NAVIGATION
+              </div>
+              <nav className="flex flex-col space-y-4 text-sm font-mono tracking-[0.2em] uppercase text-cream">
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("home")}
+                  className="text-left text-cream/50 hover:text-cream transition-colors active:scale-95"
+                >
+                  00 // TOP (HERO)
+                </button>
+                {navItems.map((item, idx) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => scrollToSection(item.id)}
+                    className={`text-left transition-colors flex items-center justify-between active:scale-95 ${
+                      activeSection === item.id
+                        ? "text-cream font-bold underline underline-offset-4"
+                        : "text-cream/80 hover:text-cream"
+                    }`}
+                  >
+                    <span>0{idx + 1} // {item.label}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-cream/40" />
+                  </button>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   )
 }
-
-export default Navigation

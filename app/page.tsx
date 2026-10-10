@@ -25,6 +25,7 @@ import ContactUs from "./components/ContactUs"
 import SandTransitionImage from "./components/SandTransitionImage"
 import FuturisticLoader from "./components/FuturisticLoader"
 import MobileDotMenu from "./components/MobileDotMenu"
+import { assetPath } from "./lib/utils"
 
 const projectsShowcase = [
   {
@@ -390,7 +391,7 @@ export default function Home() {
               <div className="lg:col-span-4 space-y-6">
                 <div className="floating-card relative aspect-[4/4.3] w-full max-w-[340px] overflow-hidden border border-white/15 bg-[#121212] shadow-[0_15px_35px_rgba(0,0,0,0.7)] group">
                   <Image
-                    src="/new-portfolio-pic.jpg"
+                    src={assetPath("/new-portfolio-pic.jpg")}
                     alt="Somula Vishnuvardhan Reddy"
                     fill
                     sizes="(max-width: 768px) 100vw, 340px"

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useId } from "react"
 import { usePresence } from "framer-motion"
+import { assetPath } from "../lib/utils"
 
 interface SandTransitionImageProps {
   src: string
@@ -110,7 +111,7 @@ export default function SandTransitionImage({ src, alt, className = "" }: SandTr
       </svg>
 
       <img
-        src={src}
+        src={assetPath(src)}
         alt={alt}
         crossOrigin="anonymous"
         referrerPolicy="no-referrer"

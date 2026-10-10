@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import type { Project } from "../data/projects"
+import { assetPath } from "../lib/utils"
 
 interface RelatedProjectsProps {
   projects: Project[]
@@ -34,7 +35,7 @@ export default function RelatedProjects({ projects }: RelatedProjectsProps) {
           >
             <div className="relative h-56 w-full overflow-hidden bg-[#0a0a0a] border-b border-white/10">
               <Image
-                src={project.imageSrc || "/placeholder.svg"}
+                src={assetPath(project.imageSrc || "/placeholder.svg")}
                 alt={project.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 48vw"

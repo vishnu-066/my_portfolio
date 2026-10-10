@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react"
 import type { ProjectImage } from "../data/projects"
 import SandTransitionImage from "./SandTransitionImage"
+import { assetPath } from "../lib/utils"
 
 interface ProjectGalleryProps {
   images: ProjectImage[]
@@ -58,7 +59,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
         <AnimatePresence mode="wait">
           <SandTransitionImage
             key={currentImg.src}
-            src={currentImg.src || "/placeholder.svg"}
+            src={assetPath(currentImg.src || "/placeholder.svg")}
             alt={currentImg.alt}
             className="w-[90%] h-[88%] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
           />
@@ -140,7 +141,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={currentImg.src || "/placeholder.svg"}
+                src={assetPath(currentImg.src || "/placeholder.svg")}
                 alt={currentImg.alt}
                 fill
                 sizes="90vw"
